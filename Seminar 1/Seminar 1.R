@@ -63,7 +63,17 @@ drugpaj <- read.paj('drugnet2.paj') # команда сразу формируе
 drug <- drugpaj$networks[[1]] # extract network
 library('network')
 plot(drug)
+##_________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment question 1 ----- 
+# what looks strange about this network? Why?
+
+network.size(drug) # how many nodes?
+network.edgecount(drug)
 network.density(drug)
+network.dyadcount(drug) # how many dyads?
+##_________________________________________________________________________________________________________________________________________________________________________________
+#----- Assignment question 2-----
+# What do the numbers above represent?
 
 gender<-drugpaj$partitions[[1]] #extract the attributes
 ethnicity <- drugpaj$partitions[[2]]
@@ -82,12 +92,19 @@ plot(drug, vertex.col=colors2)
 # Посмотреть плотность по отдельным элементам (например, по расе) - команда 
 # components
 
+
+##_________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment task 3 ----- 
+# You may have noticed that there is another network in that data file - the business network. 
+#Please plot the biz network with node attributes that you’ve set above.
+
 load('Flo.rdata')
 flomarriage <- as.network(as.matrix(flo.marriage), directed=FALSE)
 plot(flomarriage, displaylabels=TRUE)
 set.vertex.attribute(flomarriage, 'wealth', flo.att[,2])
 flomarriage
 plot(flomarriage)
+
 
 install.packages('RColorBrewer')
 library('RColorBrewer')
@@ -101,6 +118,18 @@ plot(flomarriage,
     vertex.col=FloColors)
 display.brewer.all()
 
+
+
+
+##__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment task 4 ----- 
+# Using the code already shown, plot both of the new networks. Add attributes if you wish.
+
+
+##__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment task 5 ----- 
+# For the network “drug” that we created and loaded with attributes, create several different network plots, adding gender and ethnicity 
+# to the graph as node attributes. Consider using a variety of colors to make your plot more informative.
 
 # у меня это так и не сработало, пакет рушит ар
 library('ggplot2')
