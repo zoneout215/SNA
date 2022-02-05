@@ -79,6 +79,13 @@ network.dyadcount(drug) # how many dyads?
 #----- Assignment question 2-----
 # What do the numbers above represent?
 
+network.size(drug) # how many nodes?
+network.edgecount(drug)# how many edges?
+network.dyadcount(drug) # how many dyads?
+
+# Answer:The  number of observed individuals, the number of actual pairs of acquaintances, and 
+# the number of possible pairs of acquaintances.
+
 gender<-drugpaj$partitions[[1]] #extract the attributes
 ethnicity <- drugpaj$partitions[[2]]
 
@@ -97,10 +104,7 @@ plot(drug, vertex.col=colors2)
 # components
 
 
-##_________________________________________________________________________________________________________________________________________________________________________________
-# ----- Assignment task 3 ----- 
-# You may have noticed that there is another network in that data file - the business network. 
-#Please plot the biz network with node attributes that you’ve set above.
+
 
 load('Flo.rdata')
 flomarriage <- as.network(as.matrix(flo.marriage), directed=FALSE)
@@ -121,9 +125,23 @@ plot(flomarriage,
     label.pos=0,
     vertex.col=FloColors)
 display.brewer.all()
+##_________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment task 3 ----- 
+# You may have noticed that there is another network in that data file - the business network. 
+#Please plot the biz network with node attributes that you’ve set above.
 
+flobis <- as.network(as.matrix(flo.biz), directed=FALSE)
+plot(flobis, displaylabels=TRUE)
+set.vertex.attribute(flobis, 'wealth', flo.att[,2])
+flobis
+plot(flobis)
 
-
+plot(flobis,
+     vertex.cex=(get.vertex.attribute(flobis, 'wealth')/25 +.4), 
+     displaylabels=TRUE,
+     label.cex=.5,
+     label.pos=0,
+     vertex.col=FloColors)
 
 ##__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 # ----- Assignment task 4 ----- 
