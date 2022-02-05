@@ -66,6 +66,10 @@ plot(drug)
 ##_________________________________________________________________________________________________________________________________________________________________________________
 # ----- Assignment question 1 ----- 
 # what looks strange about this network? Why?
+# Answer:  Almost a half of nodes are not connected. The fact that those individuals are not 
+#acquainted looks strange, because, even from the economics perspective, consumers need some 
+#connections with the supplier. In case of such hard to reach goods, the lack of ties looks 
+#suspicious.
 
 network.size(drug) # how many nodes?
 network.edgecount(drug)
