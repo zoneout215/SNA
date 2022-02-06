@@ -329,3 +329,29 @@ isSymmetric(as.matrix(diplomacy ))
 ## Please examine the options in the “network.layout”” command and perform the following:
 ### Луман Н., Антоновский А. Ю., Хорьков М. Л. Власть. – Праксис, 2001.
 
+
+load('trade.Rdata')
+
+# ---- Assignment task 5 ----- 
+## Irrespective of all the color/shape variations that are hurting your eyes 
+## (but at the same time show you the capabilities of the package), please 
+## answer the following questions:
+##  1. What differences do you observe between the graphs where the cutpoint
+## is any tie, at least two ties, and all ties present?
+
+##  2. What information can you gather from these observed differences to help 
+## you expand on your earlier theoretical justification of ties? Alternatively,
+## does your theoretical justification seem reasonable in light of new
+## information obtained from these graphs?
+  
+
+# ---- Assignment task 6 ----- 
+## Of course, there are differences between directed and undirected networks on 
+## the graph and with stats. Please answer the following questions:
+##  1. Draw directed and undirected ‘tradenet.2‘ networks side by side.
+##  2. What are the differences in graphs and how would you interpret them?
+
+detach(package:sna)
+detach(package:network)
+library('igraph')
+
