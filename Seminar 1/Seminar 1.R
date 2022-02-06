@@ -266,5 +266,37 @@ vertex.col=FloColors, vertex.cex = function(slice){slice%v%'activity'/5+0.5}))
 
 load('trade.Rdata')
 
+##_________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment question 1 ----- 
+# Why did we use option FALSE for command “directed” above, when creating a network?
+# Answer: Because of the nature of  ties; sexual relationship does not have any direction 
+#as it require two persons, thus we do not need any direction in our graph.
+
+##_________________________________________________________________________________________________________________________________________________________________________________
+
+
+##_________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment task 2----- 
+## Please examine the options in the “network.layout”” command and perform the following:
+## 1. Create the madmen.net with labels.
+## 2. Experiment with options by adding attributes, changing vertex or edge colors,
+## finding the best position for labels. While this task may take a while, it will 
+## count as complete if you generate at least one graph that is different from the 
+## graphs I’ve shown you in this assignment. The more different graphs with options 
+## you generate, the better - extra practice never hurts anyone.
+
+colors <- ifelse(mad.att$Female == 1, col1[1], colPastel[2])
+par(mar=c(0,0,0,0))
+plot(mad.net, vertex.col = colors )
+
+
+plot(mad.net,
+     displaylabels=TRUE,
+     label.cex=.6,
+     label.pos=0,  
+     vertex.col=colors, 
+     mode= 'fruchtermanreingold')
+##_________________________________________________________________________________________________________________________________________________________________________________
+
 
 
