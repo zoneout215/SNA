@@ -307,6 +307,24 @@ plot(mad.net,
      mode='fruchtermanreingold')
 
 ##_________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment task 3----- 
+## Please examine available matrices and answer the following questions:
+## 1. Are the matrices symmetric?
+## 2. What does that mean for resulting networks? Would they be directed or undirected?
+
+load('trade.Rdata')
+
+isSymmetric(as.matrix(trade.all))
+isSymmetric(as.matrix(manufacture))
+isSymmetric(as.matrix(food))
+isSymmetric(as.matrix(crude ))
+isSymmetric(as.matrix(minerals ))
+isSymmetric(as.matrix(diplomacy ))
+
+## Answer: It means that a given individual have a connection with another, 
+## but it is possible that they are not mutually connected, thus network should be undirected.
+
+##_________________________________________________________________________________________________________________________________________________________________________________
 # ----- Assignment task 4----- 
 ## Please examine the options in the “network.layout”” command and perform the following:
 ### Луман Н., Антоновский А. Ю., Хорьков М. Л. Власть. – Праксис, 2001.
