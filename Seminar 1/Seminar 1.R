@@ -285,32 +285,27 @@ load('trade.Rdata')
 ## graphs I’ve shown you in this assignment. The more different graphs with options 
 ## you generate, the better - extra practice never hurts anyone.
 
-colors <- ifelse(mad.att$Female == 1, col1[1], colPastel[2])
+load('madmen.Rdata')
+
+colPastel<-brewer.pal(11, 'Spectral')
+mad.net <- as.network(mad.matrix, directed=FALSE)
+set.vertex.attribute(mad.net,attrname='female', value=mad.att[,2])
+
+
+colors <- ifelse(mad.att$Female == 0, colPastel[10], colPastel[1])
+sides<-ifelse(mad.att$Female == 0, 12, 3)
+
 par(mar=c(0,0,0,0))
 plot(mad.net, vertex.col = colors)
-
 
 plot(mad.net,
      displaylabels=TRUE,
      label.cex=.6,
      label.pos=0,  
-     vertex.col=colors, 
-     mode= 'fruchtermanreingold')
+     vertex.col=colors,
+     vertex.sides=sides,
+     mode='fruchtermanreingold')
 ##_________________________________________________________________________________________________________________________________________________________________________________
 
-##_________________________________________________________________________________________________________________________________________________________________________________
-# ----- Assignment task 3----- 
-## Please examine available matrices and answer the following questions:
-## 1. Are the matrices symmetric?
-## 2. What does that mean for resulting networks? Would they be directed or undirected?
-load('trade.Rdata')
 
-isSymmetric(as.matrix(trade.all))
-isSymmetric(as.matrix(manufacture))
-isSymmetric(as.matrix(food))
-isSymmetric(as.matrix(crude))
-isSymmetric(as.matrix(minerals))
-isSymmetric(as.matrix(diplomacy))
-
-## Answer: All matrixes are assymmetrical, thus all networks should be directed.
 
