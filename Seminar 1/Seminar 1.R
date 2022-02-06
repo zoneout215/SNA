@@ -305,7 +305,9 @@ plot(mad.net,
      vertex.col=colors,
      vertex.sides=sides,
      mode='fruchtermanreingold')
+
 ##_________________________________________________________________________________________________________________________________________________________________________________
-
-
+# ----- Assignment task 4----- 
+## Please examine the options in the “network.layout”” command and perform the following:
+### Луман Н., Антоновский А. Ю., Хорьков М. Л. Власть. – Праксис, 2001.
 
