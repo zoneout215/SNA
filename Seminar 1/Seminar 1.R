@@ -298,5 +298,19 @@ plot(mad.net,
      mode= 'fruchtermanreingold')
 ##_________________________________________________________________________________________________________________________________________________________________________________
 
+##_________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment task 3----- 
+## Please examine available matrices and answer the following questions:
+## 1. Are the matrices symmetric?
+## 2. What does that mean for resulting networks? Would they be directed or undirected?
+load('trade.Rdata')
 
+isSymmetric(as.matrix(trade.all))
+isSymmetric(as.matrix(manufacture))
+isSymmetric(as.matrix(food))
+isSymmetric(as.matrix(crude))
+isSymmetric(as.matrix(minerals))
+isSymmetric(as.matrix(diplomacy))
+
+## Answer: All matrixes are assymmetrical, thus all networks should be directed.
 
