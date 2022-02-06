@@ -147,12 +147,90 @@ plot(flobis,
 # ----- Assignment task 4 ----- 
 # Using the code already shown, plot both of the new networks. Add attributes if you wish.
 
+flo.names <- scan('padgett.dat', what='character', skip=4, nlines=16) # Read data with read.table()
+flos <- read.table('padgett.dat', skip=41, col.names=flo.names)
+# Read node attributes:
+flo.att <- read.table('padgw.dat',
+                      col.names =c('WEALTH','NUM.PRIORS','NUM.TIES'), skip=25) 
+flo.att
+
+flo.att <-cbind(flo.names,flo.att)
+
+head(flo.att)
+
+# Separate adjacency matrices
+# subset of the first 16 colums is the marriage network flo.marriage <-flos[1:16,]
+dim(flo.marriage)
+
+
+row.names(flo.marriage) <-flo.names # name
+flo.biz <- flos[17:32,] # subset of the second 16 is the business network. row.names(flo.biz) <-flo.names # name
+dim(flo.biz)
+
+# Check the data by listing a couple of rows and columns from each network.
+flo.marriage[1:2,1:2]
+flo.marriage[15:16,15:16]
+flo.biz[1:2,1:2]
+flo.biz[15:16,15:16]
+
+
+flo.marriage <- as.network(as.matrix(flo.marriage),directed=FALSE) 
+flo.biz <- as.network(as.matrix(flo.biz),directed=FALSE)
+## add attributes
+set.vertex.attribute(flo.marriage, 'wealth', flo.att[,2]) 
+set.vertex.attribute(flo.biz,'wealth', flo.att[,2])
+
+
+par(mar=c(0,0,0,0))
+plot(flo.marriage,
+     vertex.cex=(get.vertex.attribute(flo.marriage, 'wealth')/25 +.4), displaylabels=TRUE,
+     label.cex=.5,
+     label.pos=0, vertex.col=FloColors)
+
+par(mar=c(0,0,0,0)) 
+plot(flo.biz,
+     vertex.cex=(get.vertex.attribute(flo.biz, 'wealth')/25 +.4), displaylabels=TRUE,
+     label.cex=.5,
+     label.pos=0, vertex.col=FloColors)
+
+
 
 ##__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 # ----- Assignment task 5 ----- 
 # For the network “drug” that we created and loaded with attributes, create several different network plots, adding gender and ethnicity 
 # to the graph as node attributes. Consider using a variety of colors to make your plot more informative.
+drugpaj <- read.paj('drugnet2.paj') #read the data
+drug <- drugpaj$networks[[1]] # extract network
+gender<-drugpaj$partitions[[1]] #extract the attributes 
+install.packages('knitr')
+suppressPackageStartupMessages(library(knitr)) #allows for better-looking tables 
+kable(table(gender), col.names=c("Gender","Frequency"))
 
+gender<-drugpaj$partitions[[1]] #extract the attributes
+ethnicity <- drugpaj$partitions[[2]]
+
+table(gender)
+table(ethnicity)
+
+#Set vectors based on attributes.
+#Number of node sides allows to create different shapes
+#(3=triangle, 4=square, etc.)
+
+# Plot of ’Hartford Drug Users’ network with attributes
+sides<-ifelse(ethnicity==1,12, ifelse(ethnicity==2, 3, ifelse(ethnicity==3, 4, 6)))
+#Set colors by gender, including gray for unknown:
+colors<-ifelse(gender==2,"palevioletred",ifelse(gender==1,"royalblue2","gray8"))
+par(mar=c(0,0,0,0)) # And the plot itself:
+plot(drug, vertex.col=colors, vertex.sides=sides, vertex.cex=1.5)
+
+
+# ---Better visualization of multi-category attributes, ’Hartford Drug Users’ network---
+colors2<-ifelse(ethnicity==1,"red", ifelse(ethnicity==2, "green", ifelse(ethnicity==3, "blue", "yellow")))
+sides2<-ifelse(gender==2,12,ifelse(gender==1,3,4))
+par(mar=c(0,0,0,0)) # And the plot itself:
+plot(drug, vertex.col=colors2, vertex.sides=sides2, vertex.cex=1) 
+
+### ----- DRAGON-----
 # у меня это так и не сработало, пакет рушит ар
 library('ggplot2')
 ##A simple 3D plot:
