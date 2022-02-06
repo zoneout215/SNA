@@ -270,7 +270,7 @@ load('trade.Rdata')
 # ----- Assignment question 1 ----- 
 # Why did we use option FALSE for command “directed” above, when creating a network?
 # Answer: Because of the nature of  ties; sexual relationship does not have any direction 
-#as it require two persons, thus we do not need any direction in our graph.
+# as it require two persons, thus we do not need any direction in our graph.
 
 ##_________________________________________________________________________________________________________________________________________________________________________________
 
@@ -287,7 +287,7 @@ load('trade.Rdata')
 
 colors <- ifelse(mad.att$Female == 1, col1[1], colPastel[2])
 par(mar=c(0,0,0,0))
-plot(mad.net, vertex.col = colors )
+plot(mad.net, vertex.col = colors)
 
 
 plot(mad.net,
