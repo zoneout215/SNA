@@ -384,13 +384,61 @@ trade.max <-ifelse(trade.all == 5, 1, 0)
 ## any outcoming relationships with anyone, but on the second graph it is
 ## obvious that Madagascar has outcoming relationships at least with USA
 
-# ---- Assignment task 6 ----- 
-## Of course, there are differences between directed and undirected networks on 
-## the graph and with stats. Please answer the following questions:
-##  1. Draw directed and undirected ‘tradenet.2‘ networks side by side.
-##  2. What are the differences in graphs and how would you interpret them?
 
-detach(package:sna)
-detach(package:network)
-library('igraph')
+##_________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment task 6----- 
+## Of course, there are differences between directed and undirected networks on the graph and with stats. Please
+## answer the following questions:
+## 1. Draw directed and undirected ‘tradenet.2‘ networks side by side.
+## 2. What are the differences in graphs and how would you interpret them?
+library('sna')
+library('network')
+library('foreign')
+
+load('trade.Rdata')
+
+trade.2 <- ifelse(trade.all > 1, 1, 0)
+
+tradenet.sym.2<- network(trade.2, directed=FALSE)
+tradenet.sym.3<- network(trade.2, directed=TRUE)
+
+par(mfrow=c(1,2))
+par(mar=c(0,0,0,0))
+
+plot(tradenet.sym.2,
+     displaylabels=TRUE,
+     label.cex =.5,
+     edge.col = 'gray50')
+
+plot(tradenet.sym.3,
+      displaylabels=TRUE,
+      label.cex =.5,
+      edge.col = 'gray50')
+
+# The main difference in graphs is that now with directions being visible we can understand that
+# diplomatical connections do not have to be symmetrical, which means - having connection does not include
+# mirroring them from both sides/countries/actors at the ends of ties 
+
+##_________________________________________________________________________________________________________________________________________________________________________________
+# ----- Assignment task 7----- 
+## What are the differences between the three networks - why do we have more components in the last network?
+## How would you explain them from the theoretical level?
+  
+
+trade.all<-as.matrix(trade.all)
+trade.any <- ifelse(trade.all > 0, 1, 0)
+trade.max <- ifelse(trade.all == 5, 1, 0)
+
+
+tradenet.any<-network(trade.any)
+tradenet2<-network(trade.2)
+tradenet5 <- network(trade.max) #turn it to a network also
+
+components(tradenet.any)
+components(tradenet2)
+components(tradenet5)
+
+
+# Looks like components there are based on number of ties (line-generated subgraphs), 
+# so dichotomization in trade.max leads to disconnection of components/formation of new ones as subgraphs change
 
