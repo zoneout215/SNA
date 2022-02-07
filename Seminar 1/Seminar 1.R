@@ -326,11 +326,33 @@ isSymmetric(as.matrix(diplomacy ))
 
 ##_________________________________________________________________________________________________________________________________________________________________________________
 # ----- Assignment task 4----- 
-## Please examine the options in the “network.layout”” command and perform the following:
-### Луман Н., Антоновский А. Ю., Хорьков М. Л. Власть. – Праксис, 2001.
-
+## With respect to the above actions, please answer the following:
+## 1. How would you justify any of these choices? Please refer to specific social theories to make your answer more legitimate.
+## 2. What are the empirical implication of these choices?
 
 load('trade.Rdata')
+trade.all<-as.matrix(trade.all)
+
+trade.any <- ifelse(trade.all > 0, 1, 0)
+### Answer: Here we convert our data to the criteria if a country have any connection with another one. In order to justify such choice, we can refer to the 
+### actor-network theory implemented by Bruno Latour. According to ANT the actor's conectedness to other actors is more important than its immanent characteristics, 
+### so if we need to check if the actors, in our case -- countries -- have at least some connections, we can implement such dichotomization.   
+
+trade.2 <- ifelse(trade.all > 1, 1, 0)
+trade.max <-ifelse(trade.all == 5, 1, 0)
+
+### Answer: What is more, if the object of our interest is either strenth or weakness of connectedness, keeping in mind the theory of M. Granovetter, we can chose 
+### the cutpoint, which will refer to the difference between strong and weak ties. 
+### With regard to the emprical aspects, the first dichotomy represents the existence/absence of tie between two countries, the second dichotomy will be relevant 
+### if we pose such research question, that the connection will be imortant for us only if countries have at least two parameters of trades, other cases will 
+###be ignored. Finally, in the last case, as in the second, we need a research question, that will enable us to ignore a particular amount of parameters. Basically,
+### we can conceptialize this dichotomy as "trade alies"/ "not trade alies" if we operationalise trade aliens as a cutpoint at 5 parameters.
+
+
+### Literature:
+### 1)Latour B. Reassembling the social: An introduction to actor-network-theory. – Oup Oxford, 2007.
+### 2)Granovetter M. S. The strength of weak ties //American journal of sociology. – 1973. – Т. 78. – №. 6. – С. 1360-1380.
+
 
 # ---- Assignment task 5 ----- 
 ## Irrespective of all the color/shape variations that are hurting your eyes 
