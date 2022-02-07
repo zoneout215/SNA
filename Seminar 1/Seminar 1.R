@@ -442,3 +442,24 @@ components(tradenet5)
 # Looks like components there are based on number of ties (line-generated subgraphs), 
 # so dichotomization in trade.max leads to disconnection of components/formation of new ones as subgraphs change
 
+##_________________________________________________________________________________________________________________________________________________________________________________
+# ----- HW 1 ----- 
+# 1.
+load('trade.Rdata')
+
+diplomacy<-as.matrix(diplomacy)
+diplomacynet<- network(diplomacy, directed=TRUE)
+
+set.vertex.attribute(diplomacynet, 'GNP', trade.att[,2])
+
+col1 <- brewer.pal(11,'Spectral')
+par(mar=c(0,0,0,0))
+plot(diplomacynet,
+     displaylabels=TRUE,
+     label.cex =.5,
+     vertex.col = col1,
+     vertex.cex=(get.vertex.attribute(diplomacynet, 'GNP')/2 + .4),
+     edge.col = "#7C8083")
+
+
+
