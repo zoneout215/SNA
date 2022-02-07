@@ -361,11 +361,28 @@ trade.max <-ifelse(trade.all == 5, 1, 0)
 ##  1. What differences do you observe between the graphs where the cutpoint
 ## is any tie, at least two ties, and all ties present?
 
+## The first and the most obvious difference is that graph is the way more 
+## readable in comparison with the others, due to a smaller number of both
+## nodes and linkes.
+## On the last graph "outsiders" become noticable - contries, who receive more 
+## than give. But in the same time three centers - Spain, USA and UK become
+## noticable.
+## On other graphs it is much harder to find any of the relationship patterns, 
+## but "outsiders" are still noticable, nevertheless not we can see that they 
+## do not only receive, but have one or two (rarely more than two) countries,
+## with who they have outgoing linkage or sometimes two-sided.
+
 ##  2. What information can you gather from these observed differences to help 
 ## you expand on your earlier theoretical justification of ties? Alternatively,
 ## does your theoretical justification seem reasonable in light of new
 ## information obtained from these graphs?
   
+## The most important conclusion is that there is no one right way of 
+## dichotomization, because from different points of view we can accidentally 
+## draw the wrong conclusions, for example, if we were were studying Madagascar,
+## looking on the last graph we can draw a conclusion that it does not has
+## any outcoming relationships with anyone, but on the second graph it is
+## obvious that Madagascar has outcoming relationships at least with USA
 
 # ---- Assignment task 6 ----- 
 ## Of course, there are differences between directed and undirected networks on 
