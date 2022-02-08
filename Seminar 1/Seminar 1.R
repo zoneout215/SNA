@@ -529,5 +529,11 @@ plot(tradegraph.diplomacy,
      vertex.label.color = 'black', 
      layout = l6)
 
-
+### 3. Tell us what inferences you can make about your selected network based on the information you’ve obtained. Supplement your arguments with logic and theory. 
+### To get full credit, this part should be no shorter than 3 pages, double-spaced, with graphs and other displays necessary.
+## Answer: According to the theory of Acemoglu D., the more inclusive political institutions country has, the more prosperity chances 
+## it has throughout the development of history. As a consistent democratically inclined, Acemoglu treats open acccess to education, inclusiveness 
+## and constructive political dialogue as immanent traces of progressive economic growth. Bearing that in mind, it seems logical that contries with more schools,
+## tend to be more inclined to the political dialogue with other counties.
+ 
 ### 	Acemoglu D., Robinson J. A., Woren D. Why nations fail: The origins of power, prosperity and poverty. – New York : Crown Publishers, 2012. – Т. 4.
