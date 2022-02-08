@@ -1,0 +1,100 @@
+---
+title: "Seminars 1-2 + Homework 1"
+author: "\\newline Zhdankina Margarita, Kolesnikova Victoria, Romanov Sergey"
+output: pdf_document
+---
+
+# Seminar 1
+## Assignment question 1
+*What looks strange about this network? Why?*
+
+Almost a half of nodes are not connected. The fact that those individuals are not 
+acquainted looks strange, because, even from the economics perspective, consumers need some 
+connections with the supplier. In case of such hard to reach goods, the lack of ties looks 
+suspicious.
+
+## Assignment question 2
+*What do the numbers above represent?*
+
+The  number of observed individuals, the number of actual pairs of acquaintances, and 
+the number of possible pairs of acquaintances.
+
+## Assignment task 3
+*You may have noticed that there is another network in that data file - the business network. Please plot the biz network with node attributes that you’ve set above.*
+
+## Assignment task 4
+*Using the code already shown, plot both of the new networks. Add attributes if you wish.*
+
+## Assignment task 5
+*For the network “drug” that we created and loaded with attributes, create several different network plots, adding gender and ethnicity to the graph as node attributes. Consider using a variety of colors to make your plot more informative.*
+
+
+# Seminar 2
+## Assignment question 1
+*Why did we use option FALSE for command “directed” above, when creating a network?*
+
+Because of the nature of  ties; sexual relationship does not have any direction 
+as it require two persons, thus we do not need any direction in our graph.
+
+## Assignment task 2
+*Please examine the options in the “network.layout” command and perform the following:* 
+
+*1. Create the madmen.net with labels.*
+
+*2. Experiment with options by adding attributes, changing vertex or edge colors, finding the best position for labels. While this task may take a while, it will count as complete if you generate at least one graph that is different from the graphs I’ve shown you in this assignment. The more different graphs with options you generate, the better - extra practice never hurts anyone.*
+
+## Assignment task 3
+*Please examine available matrices and answer the following questions:*
+
+*1. Are the matrices symmetric?*
+
+*2. What does that mean for resulting networks? Would they be directed or undirected?*
+
+It means that a given individual have a connection with another, 
+## but it is possible that they are not mutually connected, thus network should be undirected.
+
+## Assignment task 4
+*With respect to the above actions, please answer the following:*
+
+*1. How would you justify any of these choices? Please refer to specific social theories to make your answer more legitimate.*
+
+*2. What are the empirical implication of these choices?*
+
+Here we convert our data to the criteria if a country have any connection with another one. In order to justify such choice, we can refer to the actor-network theory implemented by Bruno Latour. According to ANT the actor's conectedness to other actors is more important than its immanent characteristics, so if we need to check if the actors, in our case -- countries -- have at least some connections, we can implement such dichotomization.   
+
+What is more, if the object of our interest is either strenth or weakness of connectedness, keeping in mind the theory of M. Granovetter, we can chose the cutpoint, which will refer to the difference between strong and weak ties. 
+
+With regard to the emprical aspects, the first dichotomy represents the existence/absence of tie between two countries, the second dichotomy will be relevant  if we pose such research question, that the connection will be imortant for us only if countries have at least two parameters of trades, other cases will be ignored. Finally, in the last case, as in the second, we need a research question, that will enable us to ignore a particular amount of parameters. Basically, we can conceptialize this dichotomy as "trade alies"/ "not trade alies" if we operationalise trade aliens as a cutpoint at 5 parameters.
+
+Literature:
+1. Latour B. Reassembling the social: An introduction to actor-network-theory. – Oup Oxford, 2007.
+2. Granovetter M. S. The strength of weak ties //American journal of sociology. – 1973. – T. 78. – 6. – C. 1360-1380.
+
+## Assignment task 5
+*Irrespective of all the color/shape variations that are hurting your eyes (but at the same time show you the capabilities of the package), please answer the following questions:*
+
+*1. What differences do you observe between the graphs where the cutpoint is any tie, at least two ties, and all ties present?*
+
+*2. What information can you gather from these observed differences to help you expand on your earlier theoretical justification of ties? Alternatively, does your theoretical justification seem reasonable in light of new information obtained from these graphs?*
+
+The first and the most obvious difference is that graph is the way more readable in comparison with the others, due to a smaller number of both nodes and linkes. On the last graph "outsiders" become noticeable - countries, who receive more than give. But in the same time three centers - Spain, USA and UK become noticeable.On other graphs it is much harder to find any of the relationship patterns,
+but "outsiders" are still noticeable, nevertheless not we can see that they do not only receive, but have one or two (rarely more than two) countries, with who they have outgoing linkage or sometimes two-sided.
+
+The most important conclusion is that there is no one right way of dichotomization, because from different points of view we can accidentally draw the wrong conclusions, for example, if we were were studying Madagascar,looking on the last graph we can draw a conclusion that it does not has any outcoming relationships with anyone, but on the second graph it is obvious that Madagascar has outcoming relationships at least with USA
+
+
+## Assignment task 6
+*Of course, there are differences between directed and undirected networks on the graph and with stats. Please answer the following questions:*
+
+*1. Draw directed and undirected ‘tradenet.2‘ networks side by side.*
+
+*2. What are the differences in graphs and how would you interpret them?*
+
+The main difference in graphs is that now with directions being visible we can understand that diplomatical connections do not have to be symmetrical, which means - having connection does not include mirroring them from both sides/countries/actors at the ends of ties 
+
+## Assignment question 7
+*What are the differences between the three networks - why do we have more components in the last network? How would you explain them from the theoretical level?*
+
+Looks like components there are based on number of ties (line-generated subgraphs), so dichotomization in trade.max leads to disconnection of components/formation of new ones as subgraphs change
+
+# Homework 1
