@@ -479,7 +479,6 @@ tradegraph.diplomacy <-graph.adjacency(diplomacy,
                                  mode=c("directed"),
                                  weighted=NULL,
                                  diag=FALSE)
-plot(tradegraph.diplomacy)
 
 ## here we generate all possible layouts, in order to check the most suitable one.We do not immediatly use layout_nicely 
 ## command, as it should be checked if it gives the most appropriate graph.
@@ -491,33 +490,44 @@ l5<- layout_with_kk(tradegraph.diplomacy)
 l6<- layout_nicely(tradegraph.diplomacy)
 
 x <- list(l1,l2,l3,l4,l5,l6)
-x
 
-for (k in x) {
+for (k in x) {   
   plot(tradegraph.diplomacy,
        vertex.size = 6,
        edge.arrow.size = .3,
        edge.color='gray',
        vertex.label.cex = .5,
-       vertex.color = 'yellow',
+       vertex.color = 'Blue',
        vertex.shape = 'circle',
-       vertex.frame.color = 'green',
+       vertex.frame.color = 'white',
        vertex.label.dist = .5,
        vertex.label.color = 'black', 
        layout = k)
 }
 
+## Here we create an attribute of the amount of directed ties -- both ins and outs.
+g.alld <- degree(tradegraph.diplomacy, mode = c("all"))
+
+# Make a histogram of degree
+hist(g.alld, breaks = 30)
+
+# Find the vertex that has the maximum degree
+which.max(g.alld)
+## That creates a palette for three categories of countries with regard to the amount of schools, [0, 30], (30, 70] and (70, n]
+colb<-brewer.pal(9, "Blues")
+colorsblues_schools <- ifelse(trade.att[,3] <= 30, colb[2], ifelse(trade.att[,3] > 30 &trade.att[,3]  <= 70 , colb[5],
+                                                              ifelse(trade.att[,3] > 70 ,  colb[7],  "gray8")))
 plot(tradegraph.diplomacy,
      vertex.size = 6,
      edge.arrow.size = .3,
      edge.color='gray',
      vertex.label.cex = .5,
-     vertex.color = 'yellow',
+     vertex.color = colorsblues_schools,
      vertex.shape = 'circle',
-     vertex.frame.color = 'green',
+     vertex.frame.color = 'white',
      vertex.label.dist = .5,
      vertex.label.color = 'black', 
-     layout = l5)
+     layout = l6)
 
 
 
