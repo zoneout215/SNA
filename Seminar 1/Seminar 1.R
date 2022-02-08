@@ -530,4 +530,4 @@ plot(tradegraph.diplomacy,
      layout = l6)
 
 
-
+### 	Acemoglu D., Robinson J. A., Woren D. Why nations fail: The origins of power, prosperity and poverty. – New York : Crown Publishers, 2012. – Т. 4.
