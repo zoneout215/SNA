@@ -443,7 +443,11 @@ components(tradenet5)
 # so dichotomization in trade.max leads to disconnection of components/formation of new ones as subgraphs change
 
 ##_________________________________________________________________________________________________________________________________________________________________________________
-# ----- HW 1 ----- 
+# ----- HOME WORK 1 ----- 
+### This is your first homework, and you will note that the amount of work is a bit higher than for a seminar. Perhaps, not in volume, but in integration - we ask you to put together everything that you know. You can still work in groups (same rules apply as for the seminar), and you can submit both the seminar assignment and the homework in the same file.
+### There are several networks in the “trade.Rdata” file, described above. We have fully explored the “trade.all” network. Now, select one of the individual trade networks (manufacture, food, crude, etc.) and show me everything you’ve learned in this class so far. At the very minimum, please do the following:
+
+### 1. Using package ‘sna‘, plot the network. Use attributes to color it or change the shapes of the nodes (attribute data are in the attributes file).
 # 1.
 load('trade.Rdata')
 
@@ -460,6 +464,60 @@ plot(diplomacynet,
      vertex.col = col1,
      vertex.cex=(get.vertex.attribute(diplomacynet, 'GNP')/2 + .4),
      edge.col = "#7C8083")
+
+
+
+
+
+### 2. Using package ‘igraph‘, create an appropriate graph with all possible options.
+
+detach(package:sna)
+detach(package:network)
+library(igraph)
+
+tradegraph.diplomacy <-graph.adjacency(diplomacy,
+                                 mode=c("directed"),
+                                 weighted=NULL,
+                                 diag=FALSE)
+plot(tradegraph.diplomacy)
+
+## here we generate all possible layouts, in order to check the most suitable one.We do not immediatly use layout_nicely 
+## command, as it should be checked if it gives the most appropriate graph.
+l1<- layout_in_circle(tradegraph.diplomacy)
+l2<- layout_with_fr(tradegraph.diplomacy)
+l3<- layout_as_tree(tradegraph.diplomacy)
+l4<- layout_with_lgl(tradegraph.diplomacy)
+l5<- layout_with_kk(tradegraph.diplomacy)
+l6<- layout_nicely(tradegraph.diplomacy)
+
+x <- list(l1,l2,l3,l4,l5,l6)
+x
+
+for (k in x) {
+  plot(tradegraph.diplomacy,
+       vertex.size = 6,
+       edge.arrow.size = .3,
+       edge.color='gray',
+       vertex.label.cex = .5,
+       vertex.color = 'yellow',
+       vertex.shape = 'circle',
+       vertex.frame.color = 'green',
+       vertex.label.dist = .5,
+       vertex.label.color = 'black', 
+       layout = k)
+}
+
+plot(tradegraph.diplomacy,
+     vertex.size = 6,
+     edge.arrow.size = .3,
+     edge.color='gray',
+     vertex.label.cex = .5,
+     vertex.color = 'yellow',
+     vertex.shape = 'circle',
+     vertex.frame.color = 'green',
+     vertex.label.dist = .5,
+     vertex.label.color = 'black', 
+     layout = l5)
 
 
 
