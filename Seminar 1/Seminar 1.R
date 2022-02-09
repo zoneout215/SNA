@@ -491,13 +491,13 @@ l6<- layout_nicely(tradegraph.diplomacy)
 
 x <- list(l1,l2,l3,l4,l5,l6)
 
-par(mfrow = c(3, 2))
+par(mar=c(0,0,0,0), mfrow = c(3, 2))
 for (k in x) {   
   plot(tradegraph.diplomacy,
        vertex.size = 6,
        edge.arrow.size = .3,
        edge.color='gray',
-       vertex.label.cex = .5,
+       vertex.label.cex = 0.9,
        vertex.color = 'Blue',
        vertex.shape = 'circle',
        vertex.frame.color = 'white',
@@ -525,7 +525,7 @@ plot(tradegraph.diplomacy,
      vertex.size = 6,
      edge.arrow.size = .3,
      edge.color='gray',
-     vertex.label.cex = .5,
+     vertex.label.cex = .6,
      vertex.color = colorsblues_schools,
      vertex.shape = 'circle',
      vertex.frame.color = 'white',
