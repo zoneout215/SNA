@@ -26,3 +26,41 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+##_________________________________________________________________________________________________________________________________________________________________________________
+## ----- Assignment question 2 ----- 
+#Given the explanation of transitivity provided, how do you evaluate 
+# the transitivity coefficient obtained with the above command?
+
+gtrans(flo.marriage, measure='weak')
+## Let us create one random directed graph with the same amount of nodes
+num_nodes <- 16
+my_matrix<-matrix(round(runif(num_nodes*num_nodes)), ncol = num_nodes)
+diag(my_matrix) <- 0
+
+my_network<-as.network(x = my_matrix, directed = TRUE )
+gtrans(my_network, measure='weak')
+
+# The observed figure of transitivity is less than random figures. Thus, in Medici's 
+# times, families tend to form less ties than possible. It gives us a hint that 
+# something restricts them from creating possible connections.
+
+# ----- Assignment question 3 ----- 
+# Here, we showed you how to calculate this measure and its different types,
+# but the information you get will be meaningless. Why?.
+
+grecip(flo.marriage, measure = 'dyadic') # why not 0?
+
+grecip(flo.marriage, measure = 'dyadic.nonnull')
+
+grecip(flo.marriage, measure = 'edgewise')
+
+grecip(flo.marriage, measure = 'edgewise.lrr')
+
+grecip(flo.marriage, measure = 'correlation')
+
+# Answer: In that case, those commands are meaningless, because ties represent
+# marriage and business relations which are reciprocal by definition.
