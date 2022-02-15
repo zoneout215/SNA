@@ -64,3 +64,79 @@ grecip(flo.marriage, measure = 'correlation')
 
 # Answer: In that case, those commands are meaningless, because ties represent
 # marriage and business relations which are reciprocal by definition.
+
+
+# Assignment 5
+load('flo.Rdata')
+
+suppressPackageStartupMessages(library(intergraph))
+
+flo.graph<-asIgraph(flo.marriage)
+class(flo.graph)
+
+suppressPackageStartupMessages(library(igraph))
+
+
+# here is another method in measuring distances 
+shortest_paths(flo.graph, 1, to = V(flo.graph))
+
+
+# Assignment 6
+
+#1) Take a careful look at the table with Florentine family centralities. 
+#Can you figure out why the name "Medici" is familiar to us, and others 
+#- not so much? Which centrality, in your opinion, is the most
+#"responsible"" for this?
+
+library('CINNA')
+
+#First, extract components from the flo.graph network:
+comps<-graph_extract_components(flo.graph)
+
+Comp1<-comps[[1]] #We use the first component to extract centralities from
+pr_cent<-proper_centralities(Comp1)
+
+NewCent<-calculate_centralities(Comp1, include = c(pr_cent[1:5], pr_cent[19]))
+
+NewCent<-as.data.frame(NewCent)
+
+node<-c(as.character(flo.att$flo.names[1:11]),as.character(flo.att$flo.names[13:16]))
+
+#Add a column of names to the table
+NewCent<-data.frame(node,NewCent, stringsAsFactors = FALSE)
+
+library('knitr')
+
+names(NewCent)<-c("Family", "Alpha", "Bonacich", "Page Rank", "Average Distance", "BaryCenter","Katz")
+kable(NewCent, digits=3, caption = "Florentine Families' Additional Network Centralities")
+
+# the most responsible for this is Average Distance as it shows the smallest centrality for Medici
+
+#3) From the long list of possible centralities, pick any five, plus Bonacich, Page Rank, and Katz, to analyze
+#for Florentine families.
+#• Obviously, this should not be random. READ about centralities and find the ones that you would
+#think are appropriate for the Florentine families.
+#• Briefly describe the chosen centralities. You will see why I chose Bonacich, Page Rank and Katz
+#for you to learn.
+#• Create a nice-looking table of these centralities for Florentine Families.
+#• Look at Medici now. Did any of your conclusions (from above) change? What have you learned
+#with these new centralities that was not obvious earlier?
+
+
+Cent1<-calculate_centralities(Comp1, include = c(pr_cent[2:3], pr_cent[19:21], pr_cent[31], pr_cent[35], pr_cent[45]))
+Cent1<-as.data.frame(NewCent)
+
+node<-c(as.character(flo.att$flo.names[1:11]),as.character(flo.att$flo.names[13:16]))
+
+Cent1<-data.frame(node,Cent1, stringsAsFactors = FALSE)
+
+library('knitr')
+
+names(Cent1)<-c("Family", "Bonacich", "Page Rank", "Katz", "Kleinberg's authority centrality scores",
+                "Kleinberg's hub centrality scores", "Community Centrality", "Laplacian Centrality", "Information Centrality")
+kable(Cent1, digits=3, caption = "Florentine Families' Additional Network Centralities")
+
+# "Bonacich", "Page Rank", "Katz" are somehow related to eigenvector, so that'll be the hint in choice of other centraliies
+
+
+
