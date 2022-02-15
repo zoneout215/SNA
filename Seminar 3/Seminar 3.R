@@ -1,0 +1,15 @@
+install.packages('CINNA')
+install.packages('knitr')
+library('RColorBrewer')                                                                                                                                                         
+#library('network')                                                                                                                                                                                                                                                                                                                               
+#library('sna')
+library('igraph')                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+library('intergraph')
+library('CINNA')
+library('knitr')
+
+load('flo.rdata')
+
+flo.marriage<- as.network(as.matrix(flo.marriage))
+plot(flo.marriage)
+network.size(flo.marriage)
