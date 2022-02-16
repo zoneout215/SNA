@@ -63,16 +63,20 @@ In that case, those commands are meaningless, because ties represent marriage an
 
 # Assignment question 4
 
+*What can you say about the last two commands? Why is the result what it is?*
+
+In this case there is no difference between this 2 commands because the Florentine Families network is undirected, so there is no difference how to calculate - path *to* node or *from* node, the result will be the same.
+
 
 # Assignment task 5
 
-```{r echo=TRUE}
+```{r echo=TRUE, warning=FALSE}
+detach(package:sna)
+detach(package:network)
+library(igraph)
 suppressPackageStartupMessages(library(intergraph))
-
 flo.graph<-asIgraph(flo.marriage)
 class(flo.graph)
-
-suppressPackageStartupMessages(library(igraph))
 ```
 
 here is another method in measuring distances 
@@ -83,65 +87,14 @@ shortest_paths(flo.graph, 1, to = V(flo.graph))
 
 # Seminar assignment 6
 
-1) Take a careful look at the table with Florentine family centralities. Can you figure out why the name "Medici" is familiar to us, and others - not so much? Which centrality, in your opinion, is the most "responsible"" for this?
+## 6.1
 
-```{r echo=TRUE}
-library('CINNA')
-```
+*Take a careful look at the table with Florentine family centralities. Can you figure out why the name "Medici" is familiar to us, and others - not so much? Which centrality, in your opinion, is the most "responsible"" for this?*
 
-First, extract components from the flo.graph network:
+The most "responsible" centralities are Alpha and Bonacich centrality, cause based on eigenvector centralities they should be as high as possible, but here we can see that there is some problem with it. Ridolfi has the greatest Alpha centrality and Albizzi has the greatest Bonacich centrality. Medici has an average index of centrality in this case, so based on them we can say that Madici is familiar to us, and others - not so much.
 
-```{r eval=FALSE, include=FALSE}
-comps<-graph_extract_components(flo.graph)
+## 6.2
 
-Comp1<-comps[[1]] #We use the first component to extract centralities from
-pr_cent<-proper_centralities(Comp1)
+*Interpret correlation matrix of the Florentine family centralities. What do you conclude?*
 
-NewCent<-calculate_centralities(Comp1, include = c(pr_cent[1:5], pr_cent[19]))
-
-NewCent<-as.data.frame(NewCent)
-
-node<-c(as.character(flo.att$flo.names[1:11]),as.character(flo.att$flo.names[13:16]))
-```
-
-Add a column of names to the table
-
-```{r eval=FALSE, include=FALSE}
-NewCent<-data.frame(node,NewCent, stringsAsFactors = FALSE)
-
-library('knitr')
-
-names(NewCent)<-c("Family", "Alpha", "Bonacich", "Page Rank", "Average Distance", "BaryCenter","Katz")
-kable(NewCent, digits=3, caption = "Florentine Families' Additional Network Centralities")
-```
-
-
- the most responsible for this is Average Distance as it shows the smallest centrality for Medici
-
-3) From the long list of possible centralities, pick any five, plus Bonacich, Page Rank, and Katz, to analyze for Florentine families. Obviously, this should not be random. READ about centralities and find the ones that you would think are appropriate for the Florentine families
-
-• Briefly describe the chosen centralities. You will see why I chose Bonacich, Page Rank and Katz for you to learn.
-
-• Create a nice-looking table of these centralities for Florentine Families.
-
-• Look at Medici now. Did any of your conclusions (from above) change? What have you learned with these new centralities that was not obvious earlier?
-
-```{r eval=FALSE, include=FALSE}
-Cent1<-calculate_centralities(Comp1, include = c(pr_cent[2:3], pr_cent[19:21], pr_cent[31], pr_cent[35], pr_cent[45]))
-Cent1<-as.data.frame(NewCent)
-
-node<-c(as.character(flo.att$flo.names[1:11]),as.character(flo.att$flo.names[13:16]))
-
-Cent1<-data.frame(node,Cent1, stringsAsFactors = FALSE)
-
-library('knitr')
-
-names(Cent1)<-c("Family", "Bonacich", "Page Rank", "Katz", "Kleinberg's authority centrality scores",
-                "Kleinberg's hub centrality scores", "Community Centrality", "Laplacian Centrality", "Information Centrality")
-kable(Cent1, digits=3, caption = "Florentine Families' Additional Network Centralities")
-```
-
-"Bonacich", "Page Rank", "Katz" are somehow related to eigenvector, so that'll be the hint in choice of other centraliies
-
-
-
+Firstly, in and out degrees have coeff = 1.0 for the same reason as in the assignment no. 3: The network is symmetric. As for the correlation between degrees and other measures of centrality, it is always above 0.75, which seems logical, asthe amount of in and out edges, one way or another, is involved in the computations of betweenness, closeness, and eigen-centrality. In the third term, the correlation between closeness and betweenness is the smallest one (0.567) among all. Provided that betweenness represents brokerage and control over information, it is clear that closeness, which has relatively opposite meaning, correlates less with betweenness than with others: The better information spreads(closeness), the less the possibility of structural holes, which provides the information control (betweenness). The same reason explains why eigen-vector correlates(0.67) with betweenness less than with degrees(0.94) or closeness(0.79). Eigen centrality is more related to the social capital and connected more to the valuable nodes than to the structural holes.While eigen and closeness figures depend on the same things as betweeness - the amount of ties, betweeness depends also on structural holes. Finally, as we can see, eigen-vector centrality correlates with closeness for the already mentioned reasons.
