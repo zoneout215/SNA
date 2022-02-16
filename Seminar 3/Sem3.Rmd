@@ -1,0 +1,147 @@
+---
+title: "Seminar 3"
+author: "\\newline Zhdankina Margarita, Kolesnikova Victoria, Romanov Sergey"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+library('sna')
+library('network')
+load('flo.Rdata')
+```
+
+# Assignment question 1
+
+First of all, the largest number of triads are null, that is, no one is in contact with anyone, there are only 3 mutual triads. 
+
+Secondly, Florentine Families have only 1 type of biological triads - 102, all other biological triads are not presented in this network, which can be due to the specific structure of  social communication model of that time, because triads like 012 or 021D look quite strange in context of families and their communications.
+
+Third, 201 triad type is presented 38 times, which can be due to the presence of "bridges" between different families.
+
+Thus, Florentine Families are not so connected by triads and there are many structural holes in this network, may be with the presence of little number of small clusters (3 mutual triads and 31 201 triads may indicate that).
+
+# Assignment question 2 
+
+Given the explanation of transitivity provided, how do you evaluate the transitivity coefficient obtained with the above command?
+
+```{r echo=TRUE}
+gtrans(flo.marriage, measure='weak')
+```
+
+Let us create one random directed graph with the same amount of nodes
+
+```{r echo=TRUE}
+num_nodes <- 16
+my_matrix<-matrix(round(runif(num_nodes*num_nodes)), ncol = num_nodes)
+diag(my_matrix) <- 0
+my_network<-as.network(x = my_matrix, directed = TRUE )
+gtrans(my_network, measure='weak')
+```
+
+
+The observed figure of transitivity is less than random figures. Thus, in Medici'stimes, families tend to form less ties than possible. It gives us a hint that something restricts them from creating possible connections.
+
+# Assignment question 3
+
+Here, we showed you how to calculate this measure and its different types, but the information you get will be meaningless. Why?
+
+```{r echo=TRUE}
+grecip(flo.marriage, measure = 'dyadic') # why not 0?
+grecip(flo.marriage, measure = 'dyadic.nonnull')
+grecip(flo.marriage, measure = 'edgewise')
+grecip(flo.marriage, measure = 'edgewise.lrr')
+grecip(flo.marriage, measure = 'correlation')
+```
+
+In that case, those commands are meaningless, because ties represent marriage and business relations which are reciprocal by definition.
+
+# Assignment question 4
+
+
+# Assignment task 5
+
+```{r echo=TRUE}
+suppressPackageStartupMessages(library(intergraph))
+
+flo.graph<-asIgraph(flo.marriage)
+class(flo.graph)
+
+suppressPackageStartupMessages(library(igraph))
+```
+
+here is another method in measuring distances 
+
+```{r echo=TRUE}
+shortest_paths(flo.graph, 1, to = V(flo.graph))
+```
+
+# Seminar assignment 6
+
+1) Take a careful look at the table with Florentine family centralities. Can you figure out why the name "Medici" is familiar to us, and others - not so much? Which centrality, in your opinion, is the most "responsible"" for this?
+
+```{r echo=TRUE}
+library('CINNA')
+```
+
+First, extract components from the flo.graph network:
+
+```{r eval=FALSE, include=FALSE}
+comps<-graph_extract_components(flo.graph)
+
+Comp1<-comps[[1]] #We use the first component to extract centralities from
+pr_cent<-proper_centralities(Comp1)
+
+NewCent<-calculate_centralities(Comp1, include = c(pr_cent[1:5], pr_cent[19]))
+
+NewCent<-as.data.frame(NewCent)
+
+node<-c(as.character(flo.att$flo.names[1:11]),as.character(flo.att$flo.names[13:16]))
+```
+
+Add a column of names to the table
+
+```{r eval=FALSE, include=FALSE}
+NewCent<-data.frame(node,NewCent, stringsAsFactors = FALSE)
+
+library('knitr')
+
+names(NewCent)<-c("Family", "Alpha", "Bonacich", "Page Rank", "Average Distance", "BaryCenter","Katz")
+kable(NewCent, digits=3, caption = "Florentine Families' Additional Network Centralities")
+```
+
+
+ the most responsible for this is Average Distance as it shows the smallest centrality for Medici
+
+3) From the long list of possible centralities, pick any five, plus Bonacich, Page Rank, and Katz, to analyze for Florentine families. Obviously, this should not be random. READ about centralities and find the ones that you would think are appropriate for the Florentine families
+
+• Briefly describe the chosen centralities. You will see why I chose Bonacich, Page Rank and Katz for you to learn.
+
+• Create a nice-looking table of these centralities for Florentine Families.
+
+• Look at Medici now. Did any of your conclusions (from above) change? What have you learned with these new centralities that was not obvious earlier?
+
+```{r eval=FALSE, include=FALSE}
+Cent1<-calculate_centralities(Comp1, include = c(pr_cent[2:3], pr_cent[19:21], pr_cent[31], pr_cent[35], pr_cent[45]))
+Cent1<-as.data.frame(NewCent)
+
+node<-c(as.character(flo.att$flo.names[1:11]),as.character(flo.att$flo.names[13:16]))
+
+Cent1<-data.frame(node,Cent1, stringsAsFactors = FALSE)
+
+library('knitr')
+
+names(Cent1)<-c("Family", "Bonacich", "Page Rank", "Katz", "Kleinberg's authority centrality scores",
+                "Kleinberg's hub centrality scores", "Community Centrality", "Laplacian Centrality", "Information Centrality")
+kable(Cent1, digits=3, caption = "Florentine Families' Additional Network Centralities")
+```
+
+"Bonacich", "Page Rank", "Katz" are somehow related to eigenvector, so that'll be the hint in choice of other centraliies
+
+
+
