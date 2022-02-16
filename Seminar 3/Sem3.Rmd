@@ -18,6 +18,8 @@ load('flo.Rdata')
 
 # Assignment question 1
 
+*Given the information we’ve discussed about triads, what conclusions can you make about the results of the triadic census analysis for the Florentine Family network?*
+
 First of all, the largest number of triads are null, that is, no one is in contact with anyone, there are only 3 mutual triads. 
 
 Secondly, Florentine Families have only 1 type of biological triads - 102, all other biological triads are not presented in this network, which can be due to the specific structure of  social communication model of that time, because triads like 012 or 021D look quite strange in context of families and their communications.
@@ -28,7 +30,7 @@ Thus, Florentine Families are not so connected by triads and there are many stru
 
 # Assignment question 2 
 
-Given the explanation of transitivity provided, how do you evaluate the transitivity coefficient obtained with the above command?
+*Given the explanation of transitivity provided, how do you evaluate the transitivity coefficient obtained with the above command?*
 
 ```{r echo=TRUE}
 gtrans(flo.marriage, measure='weak')
@@ -49,7 +51,7 @@ The observed figure of transitivity is less than random figures. Thus, in Medici
 
 # Assignment question 3
 
-Here, we showed you how to calculate this measure and its different types, but the information you get will be meaningless. Why?
+*Here, we showed you how to calculate this measure and its different types, but the information you get will be meaningless. Why?*
 
 ```{r echo=TRUE}
 grecip(flo.marriage, measure = 'dyadic') # why not 0?
@@ -69,6 +71,8 @@ In this case there is no difference between this 2 commands because the Florenti
 
 
 # Assignment task 5
+
+*Examine various ways to calculate distances in a graph. Calculate one measure not shown above for our Florentine Families network. Remember to use the graph object!*
 
 ```{r echo=TRUE, warning=FALSE}
 detach(package:sna)
@@ -98,3 +102,7 @@ The most "responsible" centralities are Alpha and Bonacich centrality, cause bas
 *Interpret correlation matrix of the Florentine family centralities. What do you conclude?*
 
 Firstly, in and out degrees have coeff = 1.0 for the same reason as in the assignment no. 3: The network is symmetric. As for the correlation between degrees and other measures of centrality, it is always above 0.75, which seems logical, asthe amount of in and out edges, one way or another, is involved in the computations of betweenness, closeness, and eigen-centrality. In the third term, the correlation between closeness and betweenness is the smallest one (0.567) among all. Provided that betweenness represents brokerage and control over information, it is clear that closeness, which has relatively opposite meaning, correlates less with betweenness than with others: The better information spreads(closeness), the less the possibility of structural holes, which provides the information control (betweenness). The same reason explains why eigen-vector correlates(0.67) with betweenness less than with degrees(0.94) or closeness(0.79). Eigen centrality is more related to the social capital and connected more to the valuable nodes than to the structural holes.While eigen and closeness figures depend on the same things as betweeness - the amount of ties, betweeness depends also on structural holes. Finally, as we can see, eigen-vector centrality correlates with closeness for the already mentioned reasons.
+
+## 6.3
+
+*From the long list of possible centralities, pick any five, plus Bonacich, Page Rank, and Katz, to analyze for Florentine families.*
