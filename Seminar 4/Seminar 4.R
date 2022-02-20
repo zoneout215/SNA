@@ -59,8 +59,11 @@ flomodel.02$formula
 ### ---- Assignment task 2 ---- 
 ## Explore the ERGM object on your own, testing at least 3-4 of the options you’ve generated with the names command. 
 ## What have you learned?
-flomodel.02$call
-
+names(flomodel.02)
+flomodel.02$etamap
+flomodel.02$newnetworks
+flomodel.02$loglikelihood
+flomodel.02$gradient
 
 
 #_______________________________________________________________________________________________________________________________________________________________________________________________________
@@ -69,8 +72,7 @@ flomodel.02$call
 ## How does each component affect the probability of forming a tie? Calculate the corresponding probabilities.
 flomodel.03 <- ergm(flomarriage~edges+nodecov('wealth'))
 summary(flomodel.03)
-nodecov('wealth')
-?nodecov
+
 # As both estimate coefficients are significant(p-value = 0.0001, 0.0241 < 0.1), we can claim: 
 # - that with an addition of a tie, but without the addition of main effect of covariate the log odds is -2.594929, so the influence
 # on the tie formation is negative. 
@@ -88,15 +90,15 @@ exp(flomodel.03$coef[2])
 
 P3_edges <- invlogit(flomodel.03$coef[1])
 P3_edges
-# The corresponding probability of tie formation is 0,069 with one added tie.
-P3_attr <- invlogit(flomodel.03$coef[2])
+# The corresponding probability of tie formation is 0,069 if sum of wealth attributes stays zero .
+P3_attr <- invlogit(flomodel.03$coef[1]+flomodel.03$coef[2])
 P3_attr
-# The corresponding probability of tie formation is 0,502 with one added sum-of-wealths point.
+# The corresponding probability of tie formation is 0.07015 with one added tie and one added sum-of-wealths point.
 
 
 #_______________________________________________________________________________________________________________________________________________________________________________________________________
 ### ---- Assignment task 4 ---- 
-## Interpet the model results. Are the coefficients significant? 
+## Interpret the model results. Are the coefficients significant? 
 ## How does each component affect the probability of forming a tie? Calculate the corresponding probabilities.
 
 data(samplk) 
@@ -107,24 +109,25 @@ sampmodel.01 <- ergm(samplk3~edges+mutual)
 summary(sampmodel.01)
 
 # As both estimate coefficients are significant(p-value = 0.0001, 0.0001 < 0.1), we can claim: 
-# - that with an addition of a tie, but without the addition of wealth the log odds is -2.1692, so the influence
+# - that with an addition of a tie, but without creating a mutual dyad, the log odds is -2.1692, so the influence
 # on the tie formation is negative. 
-# - that without an addition of a tie, but with the addition of a wealth point the log odds is 2.3458, so the influence
+# - that without an addition of a tie, and with creating a mutual dyad, the log odds is 2.3458, so the influence
 # on the tie formation is positive
 
 # We also can compute how those additions can change the probability of tie formation
 exp(sampmodel.01$coef[1])
-# With the addition of a tie, but zero wealth points, we expect the probability of tie formation to decrease by 93%.
+# With the addition of a tie, but zero wealth points, we expect the probability of tie formation to decrease by approximately
+# 88%.
 exp(sampmodel.01$coef[2])
-# With the addition of a wealth point, but zero ties, we expect the probability of tie formation to increase by 1.06%.
+# With the addition of a wealth point, but zero ties, we expect the probability of tie formation to increase by 920.506%.
 
 
-P4_edges <- invlogit(flomodel.03$coef[1])
+P4_edges <- invlogit(sampmodel.01$coef[1])
 P4_edges
-# The corresponding probability of tie formation is 0,069 with one added tie.
-P4_attr <- invlogit(flomodel.03$coef[2])
+# The corresponding probability of tie formation is 0.1030817 if it is not mutual.
+P4_attr <- invlogit(sampmodel.01$coef[1] + sampmodel.01$coef[2])
 P4_attr
-# The corresponding probability of tie formation is 0,502 with one added wealth point.
+# The corresponding probability of tie formation is 0,539 if it is mutual.
 
 
 
