@@ -29,9 +29,39 @@ summary(flomodel.02)
 
 
 
+### ---- Assignment task 1 ---- 
+
+##
+##You should be able to easily answer the following questions:
+
+##  1. What is an odds function?
+## Answer: Odds function is equivalent to the exponential function of OLS 
+## regression. So Odds = exp(b0 + b1*x1 + ... + bn*xn), where odds = p(x)/1-p(x), 
+## given that p(x) is a probability that dependent variable equals a case.
+
+##  2. What is an odds ratio?
+## Answer: In case of a continuous independent variable the odds ratio is defined 
+## as OR = odds(x+1)/odds(x), where odds(x) = p(x)/1-p(x) = exp(b0 + b1*x1). 
+## The bn*xn is skipped for simplicity, so OR = exp(b0 + b1*(x1+1))/exp(b0 + b1*x1), 
+## which gives us the final form OR = e(b1). In case of binary independent variable,
+## OR = a*b/c*d, where a, b, c, d are the probabilities in the contingency table of independent
+## variable. 
+
+##  3. What is a log-odds function?
+## Logs-odds function is  defined as log(p(x)/1-p(x)) = b0 + b1*x1 + ... + bn*xn
+##  4. What is a logistic function?
+## Logistic function has a sigmoid shape and is defined as -- again the case of 
+## one dependent variable is taken for simplicity, -- P(x)= 1/1+exp(-(b0 + b1*x1))
+##  5. What is the relationship between predicted probabilities and predicted odds? 
+
+## 6. What is a pseudo-R-square?
+
+##  7. How do you interpret the results of the logistic regression?
+  
+
 
 #_______________________________________________________________________________________________________________________________________________________________________________________________________
-### ---- Assignment task 1 ---- 
+### ---- Assignment task 2 ---- 
 ## Compute corresponding probabilities for the log-odds above. Are triangles significant in our model?
 
 # if the tie will not add any triangles to the network, its log-odds is: -1.680
@@ -46,28 +76,19 @@ P1_3
 #Answer: the coefficient of triangles is not significant as p-value is 0.75 (>0.1)
 
 #_______________________________________________________________________________________________________________________________________________________________________________________________________
-### ---- Assignment task 2 ---- 
-## Compute corresponding probabilities for the log-odds above. Are triangles significant in our model? 
-
-class(flomodel.02) # check the class
-names(flomodel.02) # look at the ERGM object
-flomodel.02$coef
-flomodel.02$formula
-
-
-#_______________________________________________________________________________________________________________________________________________________________________________________________________
-### ---- Assignment task 2 ---- 
+### ---- Assignment task 3 ---- 
 ## Explore the ERGM object on your own, testing at least 3-4 of the options you’ve generated with the names command. 
 ## What have you learned?
+
+class(flomodel.02) # check the class
 names(flomodel.02)
 flomodel.02$etamap
 flomodel.02$newnetworks
 flomodel.02$loglikelihood
 flomodel.02$gradient
 
-
 #_______________________________________________________________________________________________________________________________________________________________________________________________________
-### ---- Assignment task 3 ---- 
+### ---- Assignment task 4 ---- 
 ## Interpet the model results. Are the coefficients significant? 
 ## How does each component affect the probability of forming a tie? Calculate the corresponding probabilities.
 flomodel.03 <- ergm(flomarriage~edges+nodecov('wealth'))
@@ -97,7 +118,7 @@ P3_attr
 
 
 #_______________________________________________________________________________________________________________________________________________________________________________________________________
-### ---- Assignment task 4 ---- 
+### ---- Assignment task 5 ---- 
 ## Interpret the model results. Are the coefficients significant? 
 ## How does each component affect the probability of forming a tie? Calculate the corresponding probabilities.
 
