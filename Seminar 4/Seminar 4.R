@@ -65,14 +65,14 @@ summary(flomodel.02)
 ## Compute corresponding probabilities for the log-odds above. Are triangles significant in our model?
 
 # if the tie will not add any triangles to the network, its log-odds is: -1.680
-P1_1 <- invlogit(flomodel.02$coef[1])
-P1_1
+P2_1 <- invlogit(flomodel.02$coef[1])
+P2_1
 # if the tie will add one triangle to the network, its log-odds is: -1.680+0.169=-1.510
-P1_2 <- invlogit(flomodel.02$coef[1]+flomodel.02$coef[2])
-P1_2
+P2_2 <- invlogit(flomodel.02$coef[1]+flomodel.02$coef[2])
+P2_2
 # if a tie will add two triangles to the network, its log-odds is: -1.680+0.169x2=-1.341
-P1_3 <- invlogit(flomodel.02$coef[1]+2*flomodel.02$coef[2])
-P1_3
+P2_3 <- invlogit(flomodel.02$coef[1]+2*flomodel.02$coef[2])
+P2_3
 #Answer: the coefficient of triangles is not significant as p-value is 0.75 (>0.1)
 
 #_______________________________________________________________________________________________________________________________________________________________________________________________________
@@ -109,11 +109,11 @@ exp(flomodel.03$coef[2])
 # to increase by 1.06%.
 
 
-P3_edges <- invlogit(flomodel.03$coef[1])
-P3_edges
+P4_edges <- invlogit(flomodel.03$coef[1])
+P4_edges
 # The corresponding probability of tie formation is 0,069 if sum of wealth attributes stays zero .
-P3_attr <- invlogit(flomodel.03$coef[1]+flomodel.03$coef[2])
-P3_attr
+P4_attr <- invlogit(flomodel.03$coef[1]+flomodel.03$coef[2])
+P4_attr
 # The corresponding probability of tie formation is 0.07015 with one added tie and one added sum-of-wealths point.
 
 
@@ -143,11 +143,11 @@ exp(sampmodel.01$coef[2])
 # With the addition of a wealth point, but zero ties, we expect the probability of tie formation to increase by 920.506%.
 
 
-P4_edges <- invlogit(sampmodel.01$coef[1])
-P4_edges
+P5_edges <- invlogit(sampmodel.01$coef[1])
+P5_edges
 # The corresponding probability of tie formation is 0.1030817 if it is not mutual.
-P4_attr <- invlogit(sampmodel.01$coef[1] + sampmodel.01$coef[2])
-P4_attr
+P5_attr <- invlogit(sampmodel.01$coef[1] + sampmodel.01$coef[2])
+P5_attr
 # The corresponding probability of tie formation is 0,539 if it is mutual.
 
 
