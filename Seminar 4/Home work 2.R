@@ -71,10 +71,6 @@ FriendMat<-read.csv("Friendnet.csv",header=TRUE, sep=";")
 rownames(FriendMat) <- FriendMat[,1]
 FriendMat[,1] <- NULL
 
-View(FriendMat)
-ncol(FriendMat)
-nrow(FriendMat)
-summarize(FriendMat)
 
 ProfMat<-read.csv("Profnet.csv",header=TRUE, sep=";")
 rownames(ProfMat) <- ProfMat[,1]
