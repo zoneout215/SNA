@@ -13,7 +13,7 @@
 ## and role conflicts [1,2]. Smith C. et al. claim that overall emotional attitude 
 ## affect incline workers towards cooperation, which can be also influenced by
 ## things not supported with literature as the nature of cooperation is not only 
-## formal, but also informal.
+## formal, but also informal. ### ПЕРЕПИСАТЬ!
 
 
 ## 2. Please examine the supervisor’s questionnaire. In there, questions were not 
