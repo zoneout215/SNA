@@ -150,7 +150,125 @@ P5_attr <- invlogit(sampmodel.01$coef[1] + sampmodel.01$coef[2])
 P5_attr
 # The corresponding probability of tie formation is 0,539 if it is mutual.
 
+# HOMEWORK 2
+library('igraph')
 
+all_net<-read.csv('AllNet.csv', header=TRUE, sep=";") # read data
+
+all_mat<-as.matrix(all_net) # save it as a matrix
+
+transform(all_mat, YuEYu = as.numeric(YuEYu))
+
+all_mat[is.na(all_mat)] <- 0
+
+all_graph<-graph_from_adjacency_matrix(all_mat) #create a graph
+
+FriendMat<-read.csv("Friendnet.csv",header=TRUE, sep=";")
+ProfMat<-read.csv("Profnet.csv",header=TRUE, sep=";")
+BossMat<-read.csv("BossNet.csv",header=TRUE, sep=";")
+SupportMat<-read.csv("SupportNet.csv",header=TRUE, sep=";")
+FriendMat<-as.matrix(FriendMat)
+ProfMat<-as.matrix(ProfMat)
+BossMat<-as.matrix(BossMat)
+SupportMat<-as.matrix(SupportMat)
+Friend.any <- ifelse(FriendMat > 0, 1, 0)
+Boss.any <- ifelse(BossMat > 0, 1, 0)
+Prof.any <- ifelse(ProfMat > 0, 1, 0)
+Support.any <- ifelse(SupportMat > 0, 1, 0)
+suppressPackageStartupMessages(library(igraph))
+FriendGraph<-graph_from_adjacency_matrix(FriendMat, weighted=TRUE)
+ProfGraph<-graph_from_adjacency_matrix(ProfMat, weighted=TRUE)
+BossGraph<-graph_from_adjacency_matrix(BossMat, weighted=TRUE)
+SupportGraph<-graph_from_adjacency_matrix(SupportMat, weighted=TRUE)
+FriendGraph.any <-graph.adjacency(Friend.any,
+                                  mode=c("directed"),
+                                  weighted=NULL,
+                                  diag=FALSE)
+
+
+BossGraph.any <-graph.adjacency(Boss.any,
+                                mode=c("directed"),
+                                weighted=NULL,
+                                diag=FALSE)
+ProfGraph.any <-graph.adjacency(Prof.any,
+                                mode=c("directed"),
+                                weighted=NULL,
+                                diag=FALSE)
+SupportGraph.any <-graph.adjacency(Support.any,
+                                   mode=c("directed"),
+                                   weighted=NULL,
+                                   diag=FALSE)
+
+
+detach(package:igraph)
+library(sna)
+Friendnet<-as.network(Friend.any, directed=TRUE)
+Bossnet<-as.network(Boss.any, directed=TRUE)
+Profnet<-as.network(Prof.any, directed=TRUE)
+Supportnet<-as.network(Support.any, directed=TRUE)
+
+ocb_att<-read.csv('ocb_att.csv', header=TRUE)
+# To make sure we got it right, let's look at the age variable:
+ocb_att$Age
+
+
+age<-ocb_att$Age
+sex<-ocb_att$Sex
+#How long the person had this position:
+tenure<-ocb_att$WorkTitleYear+ocb_att$WorkTitleMonth/12
+#How long worked in organization:
+tenure_org<-ocb_att$WorkOrgYear+ocb_att$WorkOrgMonth/12
+#How long reported to the same supervisor:
+tenure_sup<-ocb_att$RepSupYear+ocb_att$RepSupMonth/12
+# Set of dummies for education:
+ed1<-ifelse(ocb_att$Education==3,1,0) # this is for secondary specialized
+ed2<-ifelse(ocb_att$Education==4,1,0) # this is higher
+# Secondary, obviously, is the baseline
+
+#Physical participation variable
+phys_part<-ocb_att$Phys_Part
+
+
+HR_att<-read.csv("OCB_att.csv",header=TRUE)
+#Let's get the sex of our respondents into its own vector:
+sex<-HR_att$Sex
+age<-HR_att$Age
+#Dependent variables
+Emotional_part<-HR_att$Emot_Part
+Intent_to_leave<-HR_att$Intent_toLeave
+Personal_conflicts<-HR_att$Personal_conflicts
+#Predictors
+#Challenge stressors:
+Work_Quant<-HR_att$Work_quant #Work quantity
+Work_Resp<-HR_att$Work_Resp #Work responsibility
+Work_Diff<-HR_att$Work_Diff #work difficulty
+Work_Speed<-HR_att$Work_Speed # Work speed
+#Hindrance stressors:
+Admin_problems<-HR_att$Admin_problems
+Personal_conflicts<-HR_att$Personal_conflicts
+
+
+names<-ocb_att$Name # pull the names out of attributes dataset
+gender_vector<-vector() #create a vector for gender
+
+
+suppressPackageStartupMessages(library(igraph))
+for(i in 1:122){ # this is our set of all network nodes
+  for(j in 1:68){ # this is our set of attribute-containing nodes
+    # for each node in i, we run through all node in j
+    # and compare names
+    if(V(all_graph)$name[i]==names[j]){
+      #if we match, we add the attribute to a vector
+      gender_vector[i]<-sex[j]
+      # and exit the inner loop for the next i
+      break;}
+    # if not, we are assigning a missing value
+    # and keep going until we find a matching node
+    else{gender_vector[i]<-NA}
+  }
+}
+# Let's look at the result:
+gender_vector
 
 
 
