@@ -8,12 +8,11 @@
 ## those are factors that we can analyze using Factor Analysis. Which of these
 ## factors could be used for good dependent variables? Why?
 
-## Answer: We found several research papers, which support almost all of
-## the given factors, apart from speed of work-flow, administrative problems 
-## and role conflicts [1,2]. Smith C. et al. claim that overall emotional attitude 
-## affect incline workers towards cooperation, which can be also influenced by
-## things not supported with literature as the nature of cooperation is not only 
-## formal, but also informal. ### ПЕРЕПИСАТЬ!
+## Answer: We found several research papers, and from them we can derive that 
+## emotional participation factor could be a good dependent variable. Work-flow
+## quality, physical environment, salary, relationships with supervisors and 
+## co-workers -- all of that can,in theory, affect emotional participation, or how it coined
+## in the literature[see 1, 2] -- job satisfaction.
 
 
 ## 2. Please examine the supervisor’s questionnaire. In there, questions were not 
@@ -24,15 +23,13 @@
 ## Answer: The reason why those questions were not split into groups is that 
 ## we do not want to artificially construct those factors and put them into variables.
 ## Questions regarding supervisors' opinion measure a subjective entity, thus, presupposed
-## factors would distort the research object. The difference between supervisors' 
-## and subordinates' questions is that the latter measure a bit more operationalized
-## phenomena, also it has a sufficient theoretical basis (see Smith C. et al.).
+## factors would distort the research object. 
 
-## Also from literature we can reconstruct factors from supervisors' part[3]:
-## - Interpersonal helping 
-## - Individual initiative 
-## - Personal industry 
-## - Loyal boosterism
+## Also from literature we can reconstruct theoretical factors from supervisors' questionnaire[3]:
+## - Interpersonal helping Q13, Q21 - Q23
+## - Individual initiative Q16-Q19, Q24-Q32
+## - Personal industry Q4-Q12, Q14, Q33
+## - Loyal boosterism Q1- Q4
 
 
 ## Literature:
@@ -71,6 +68,10 @@ FriendMat<-read.csv("Friendnet.csv",header=TRUE, sep=";")
 rownames(FriendMat) <- FriendMat[,1]
 FriendMat[,1] <- NULL
 
+View(FriendMat)
+ncol(FriendMat)
+nrow(FriendMat)
+summarize(FriendMat)
 
 ProfMat<-read.csv("Profnet.csv",header=TRUE, sep=";")
 rownames(ProfMat) <- ProfMat[,1]
@@ -192,3 +193,25 @@ gender_vector
 
 
 
+
+
+
+
+
+
+plot(Friendnet, vertex.size=.1)
+
+
+friend_model <-ergm(Friendnet ~ edges)
+summary(friend_model)
+
+invlogit <- function(x) {1/(1 + exp(-x))} 
+x<-coef(friend_model)
+
+invlogit(friend_model$coef[1])
+
+set.seed(0)
+
+
+friend_model.02 <- ergm(Friendnet ~ edges + mutual)
+summary(friend_model.02)
