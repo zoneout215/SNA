@@ -271,6 +271,37 @@ for(i in 1:122){ # this is our set of all network nodes
 gender_vector
 
 
+plot(Friendnet, vertex.size=.1)
+set.seed(0)
+friend_model <-ergm(Friendnet ~ edges)
+summary(friend_model)
+# Estimate coefficient is significant(p-value = 0.0001 < 0.1), so we can claim: 
+#  - that with an addition of a tie, the log odds are -3.73857, so the 
+# influence on the tie formation is negative. 
+invlogit <- function(x) {1/(1 + exp(-x))} 
+x<-coef(friend_model)
+invlogit(friend_model$coef[1])
+# The corresponding probability of tie formation is 0.02323 if it is not mutual
+
+set.seed(0)
+friend_model.02 <- ergm(Friendnet ~ edges + mutual)
+summary(friend_model.02)
+# As both estimate coefficients are significant(p-value = 0.0001, 0.0001 < 0.1), we can claim:
+# - that with an addition of a tie, but without creating a mutual dyad, the log odds 
+# is -4.13547, so the influence on the tie formation is negative; 
+# - that without an addition of a tie, and with creating a mutual dyad, 
+# the log odds is 3.45980, so the influence on the tie formation is positive
+
+x1 <- invlogit(friend_model.02$coef[1] + friend_model.02$coef[2])
+x1
+# The corresponding probability of tie formation is 33,7% if it is mutual.
+
+mcmc.diagnostics(friend_model.02)
+# The plots look normal, but show large range in sample. 
+
+# Number of edges in a simulated network exceeds number in observed one by a factor of 38. 
+# That provides information about strong model degeneracy or bad configuration.
+
 
 
 
