@@ -47,7 +47,7 @@ suppressPackageStartupMessages(library(RColorBrewer))
 suppressPackageStartupMessages(library(rgl))
 suppressPackageStartupMessages(library(sna))
 suppressPackageStartupMessages(library(knitr))
-suppressPackageStartupMessages(library(igraph))
+
 
 
 # HOMEWORK 2
@@ -146,6 +146,9 @@ ed1<-ifelse(ocb_att$Education==3,1,0) # this is for secondary specialized
 ed2<-ifelse(ocb_att$Education==4,1,0) # this is higher
 # Secondary, obviously, is the baseline
 
+
+ocb_att$Education
+ocb_att$Title
 #Physical participation variable
 phys_part<-ocb_att$Phys_Part
 
@@ -193,25 +196,148 @@ gender_vector
 
 
 
+detach(package:sna)
+detach(package:ergm)
+detach(package:network)
 
+detach(package:igraph)
 
+plot(Profnet, vertex.size=.1)
 
-
-
-
-plot(Friendnet, vertex.size=.1)
-
-
-friend_model <-ergm(Friendnet ~ edges)
-summary(friend_model)
+set.seed(0)
+proff_model <-ergm(Profnet ~ edges)
+summary(proff_model)
 
 invlogit <- function(x) {1/(1 + exp(-x))} 
 x<-coef(friend_model)
 
 invlogit(friend_model$coef[1])
 
+proff_model <- ergm(Profnet ~ edges + mutual)
+summary(proff_model)
+
+mcmc.diagnostics(proff_model)
+
+proff_model.01  <- ergm(Profnet~edges+ mutual+gwesp(0.25) + nodecov('age'),
+     control = control.ergm(seed=1,MCMC.samplesize=50000, MCMC.interval=1000), verbose =T) 
+summary(proff_model.01)
+
+
+all_net %v% "sex" <- sex
+all_net %v% "sex" <- age
+
+Friendnet %v% "sex" <- sex 
+Friendnet %v% "age" <- age
+Friendnet %v% "secondary specialized" <- ed1 
+Friendnet %v% "higher ed" <- ed2 
+Friendnet %v% "t_position" <- tenure
+Friendnet %v% "t_organization" <- tenure_org
+Friendnet %v% "t_supervisor" <- tenure_sup
+Friendnet %v% "emo_participation" <- Emotional_part
+Friendnet %v% "title" <- ocb_att$Title 
+
+Profnet %v% "sex" <- sex 
+Profnet %v% "age" <- age 
+Profnet %v% "title" <- ocb_att$Title 
+Profnet %v% "ed" <- ocb_att$Education 
+Profnet %v% "secondary specialized" <- ed1 
+Profnet %v% "higher ed" <- ed2 
+Profnet %v% "t_position" <- tenure
+Profnet %v% "t_organization" <- tenure_org
+Profnet %v% "t_supervisor" <- tenure_sup
+Profnet %v% "emo_participation" <- Emotional_part
+Profnet %v% "Work_Quant" <- Work_Quant
+Profnet %v% "Work_Resp" <- Work_Resp
+Profnet %v% "Work_Diff" <- Work_Diff
+Profnet %v% "Work_Speed" <- Work_Speed
+Profnet %v% "Admin_problems" <- Admin_problems
+Profnet %v% "Personal_conflicts" <- Personal_conflicts
+
+
+
+
+Bossnet %v% "sex" <- sex 
+Bossnet %v% "age" <- age
+Bossnet %v% "secondary specialized" <- ed1 
+Bossnet %v% "higher ed" <- ed2 
+Bossnet %v% "t_position" <- tenure
+Bossnet %v% "t_organization" <- tenure_org
+Bossnet %v% "t_supervisor" <- tenure_sup
+
+Supportnet %v% "sex" <- sex 
+Supportnet %v% "age" <- age
+Supportnet %v% "secondary specialized" <- ed1 
+Supportnet %v% "higher ed" <- ed2 
+Supportnet %v% "t_position" <- tenure
+Supportnet %v% "t_organization" <- tenure_org
+Supportnet %v% "t_supervisor" <- tenure_sup
+
+
+
+
+
 set.seed(0)
+prof_model.03 <- ergm(Profnet ~ edges + mutual) 
+summary(prof_model.03)
+
+prof_model.04 <- ergm(Profnet ~ edges + mutual + nodefactor('sex') + nodecov('age')+ nodematch('secondary specialized')
+                      +  nodematch('higher ed')+ nodecov('t_position')+nodecov('t_organization')+nodecov('t_supervisor') )
+summary(prof_model.04)
+
+prof_model.05 <- ergm(Profnet ~ edges  + nodecov('age')+ nodefactor('title')  )
+summary(prof_model.05)
+
+prof_model.06 <- ergm(Profnet ~ edges + mutual  + nodecov('age')+ nodefactor('sex')  )
+summary(prof_model.06)
+
+prof_model.07 <- ergm(Profnet ~ edges + mutual+ nodecov('age')+ nodefactor('ed')  )
+summary(prof_model.07)
+
+prof_model.08 <- ergm(Profnet ~ edges + mutual  + nodecov('age')+nodematch('sex')+ gwesp(0.5, fixed=T),
+                      control = control.ergm(seed=1,MCMC.samplesize=50000,MCMC.interval=1000), verbose = T))
+summary(prof_model.08)
+
+count(sex)
+prof_model.08 <- ergm(Profnet ~ edges + mutual + nodecov('age') + nodematch('sex') )
+summary(prof_model.08)
 
 
-friend_model.02 <- ergm(Friendnet ~ edges + mutual)
-summary(friend_model.02)
+
+
+
+
+
+friend_model.01<- ergm(Friendnet ~ edges + mutual  + nodecov('age')+ nodecov('emo_participation') + nodematch('sex') )
+
+
+prof_model.08.gof<-gof(prof_model.08~triadcensus)
+# The code below is commented out, but if you want to see
+# what we get with m1.gof object, check it:
+##names(m1.gof)
+kable(prof_model.08.gof$pval.ideg, caption="Goodness-of-fit for Indegree")
+par(mfrow=c(1,1))
+plot(prof_model.08.gof)
+
+
+prof_model.09 <- ergm(Profnet~edges+mutual+nodecov('age') +gwesp(0.5,fixed=T), control=control.ergm(seed=0,MCMLE.maxit=1, MCMLE.density.guard.min=20000) )
+
+summary(prof_model.08)
+mcmc.diagnostics(prof_model.08)
+
+
+summary(friend_model.01)
+Profnet %v% "Work_Speed" <- Work_Speed
+Profnet %v% "Admin_problems" <- Admin_problems
+Profnet %v% "Personal_conflicts" <- Personal_conflicts
+
+
+mcmc.diagnostics(prof_model.07)
+
+
+
+
+f1.gof<-gof(friend_model.02~odegree)
+kable(f1.gof$pval.ideg, caption="Goodness-of-fit for Indegree") 
+par(mfrow=c(1,1))
+plot(f1.gof)
+
