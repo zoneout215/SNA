@@ -284,8 +284,9 @@ prof_model.04 <- ergm(Profnet ~ edges + mutual + nodefactor('sex') + nodecov('ag
                       +  nodematch('higher ed')+ nodecov('t_position')+nodecov('t_organization')+nodecov('t_supervisor') )
 summary(prof_model.04)
 
-prof_model.05 <- ergm(Profnet ~ edges  + nodecov('age')+ nodefactor('title')  )
+prof_model.05 <- ergm(Profnet ~ edges +mutual + nodeicov('age')+ nodeocov('age') + nodefactor('title'))
 summary(prof_model.05)
+prof_model.05.gof<-gof(prof_model.05~odegree)
 
 prof_model.06 <- ergm(Profnet ~ edges + mutual  + nodecov('age')+ nodefactor('sex')  )
 summary(prof_model.06)
