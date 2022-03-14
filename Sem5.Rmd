@@ -1,0 +1,273 @@
+---
+title: "Seminar 5"
+author: "\\newline Zhdankina Margarita, Kolesnikova Victoria, Romanov Sergey"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+suppressPackageStartupMessages(library(coda))
+suppressPackageStartupMessages(library(RColorBrewer))
+suppressPackageStartupMessages(library(sna))
+suppressPackageStartupMessages(library(knitr))
+suppressPackageStartupMessages(library(igraph))
+```
+
+
+```{r include=FALSE}
+all_net<-read.csv('AllNet.csv', header=TRUE, sep=";") # read data
+rownames(all_net) <- all_net[,1]
+all_net[,1] <- NULL
+all_net<-as.matrix(all_net) # save it as a matrix
+all_graph<-graph_from_adjacency_matrix(all_net) #create a graph
+
+
+FriendMat<-read.csv("FriendNet.csv",header=TRUE, sep=";")
+rownames(FriendMat) <- FriendMat[,1]
+FriendMat[,1] <- NULL
+
+ProfMat<-read.csv("ProfNet.csv",header=TRUE, sep=";")
+rownames(ProfMat) <- ProfMat[,1]
+ProfMat[,1] <- NULL
+
+BossMat<-read.csv("BossNet.csv",header=TRUE, sep=";")
+rownames(BossMat) <- BossMat[,1]
+BossMat[,1] <- NULL
+
+
+SupportMat<-read.csv("SupportNet.csv",header=TRUE, sep=";")
+rownames(SupportMat) <- SupportMat[,1]
+SupportMat[,1] <- NULL
+
+
+
+FriendMat<-as.matrix(FriendMat)
+
+ProfMat<-as.matrix(ProfMat)
+BossMat<-as.matrix(BossMat)
+SupportMat<-as.matrix(SupportMat)
+Friend.any <- ifelse(FriendMat > 0, 1, 0)
+Boss.any <- ifelse(BossMat > 0, 1, 0)
+Prof.any <- ifelse(ProfMat > 0, 1, 0)
+Support.any <- ifelse(SupportMat > 0, 1, 0)
+```
+
+
+```{r include=FALSE}
+FriendGraph<-graph_from_adjacency_matrix(FriendMat,  weighted=TRUE)
+ProfGraph<-graph_from_adjacency_matrix(ProfMat, weighted=TRUE)
+BossGraph<-graph_from_adjacency_matrix(BossMat, weighted=TRUE)
+SupportGraph<-graph_from_adjacency_matrix(SupportMat, weighted=TRUE)
+FriendGraph.any <-graph.adjacency(Friend.any,
+                                  mode=c("directed"),
+                                  weighted=NULL,
+                                  diag=FALSE)
+
+
+BossGraph.any <-graph.adjacency(Boss.any,
+                                mode=c("directed"),
+                                weighted=NULL,
+                                diag=FALSE)
+ProfGraph.any <-graph.adjacency(Prof.any,
+                                mode=c("directed"),
+                                weighted=NULL,
+                                diag=FALSE)
+
+
+
+SupportGraph.any <-graph.adjacency(Support.any,
+                                   mode=c("directed"),
+                                   weighted=NULL,
+                                   diag=FALSE)
+
+
+ocb_att<-read.csv('ocb_att.csv', header=TRUE)
+```
+
+```{r include=FALSE}
+age<-ocb_att$Age
+sex<-ocb_att$Sex
+#How long the person had this position: 
+tenure<-ocb_att$WorkTitleYear+ocb_att$WorkTitleMonth/12
+#How long worked in organization: 
+tenure_org<-ocb_att$WorkOrgYear+ocb_att$WorkOrgMonth/12 
+#How long reported to the same supervisor: 
+tenure_sup<-ocb_att$RepSupYear+ocb_att$RepSupMonth/12
+#Set of dummies for education:
+ed1<-ifelse(ocb_att$Education==3,1,0) 
+#this is for secondary specialized 
+ed2<-ifelse(ocb_att$Education==4,1,0)
+#this is higher
+#Secondary, obviously, is the baseline
+```
+
+```{r include=FALSE}
+#Physical participation variable
+phys_part<-ocb_att$Phys_Part
+```
+
+
+# Assignment task 1
+
+*Create a dummy set for work title*
+
+
+```{r}
+table(ocb_att$Title) # What work titles are included
+```
+
+```{r}
+tit1<-ifelse(ocb_att$Title=='Assistant department head',1,0)
+tit2<-ifelse(ocb_att$Title=='Department director',1,0)
+tit3<-ifelse(ocb_att$Title=='Department head',1,0)
+tit4<-ifelse(ocb_att$Title=='Head lawyer',1,0)
+tit5<-ifelse(ocb_att$Title=='Lead specialist',1,0)
+tit6<-ifelse(ocb_att$Title=='Project manager',1,0)
+tit7<-ifelse(ocb_att$Title=='Specialist',1,0)
+tit8<-ifelse(ocb_att$Title=='Subsidiary manager',1,0)
+```
+
+Lawyers are our baseline, because their sample is average
+
+
+# Assignment task 2
+
+*Test your dummy work title set in the regression above. Do you get anything worthwhile?*
+
+```{r}
+lm1<-lm(phys_part~tenure+tenure_sup + tit1+tit2+tit3+tit4+tit5+tit6+tit7+tit8)
+summary(lm1)
+```
+
+
+As we can see, this model is significant (p-value = 0.004), but all set of dummies is not significant at all. R-square in comparison with the model without this set of dummies is bigger, but the significance tell us that this increase is nothing.
+
+But maybe there can be a possibility that the 'level' of title can influence, not the exact title, so let's try another way of creating the dummies:
+
+```{r}
+lev1<-ifelse(ocb_att$Title=='Head lawyer',1,
+             ifelse(ocb_att$Title=='Department director',1,
+                    ifelse(ocb_att$Title=='Department head',1,
+                           ifelse(ocb_att$Title=='Lead specialist',1,0))))
+
+
+lev2<-ifelse(ocb_att$Title=='Lawyer',1,
+             ifelse(ocb_att$Title=='Assistant department head',1,
+                    ifelse(ocb_att$Title=='Project manager',1,
+                           ifelse(ocb_att$Title=='pecialist',1,
+                                  ifelse(ocb_att$Title=='Subsidiary manager',1,0)))))
+
+```
+
+Now let's try a model
+
+```{r}
+lm2<-lm(phys_part~tenure+tenure_sup + lev1)
+summary(lm2)
+```
+
+As we can see, no changes - "level" of title is not significant, but let's try to use level-1 variable as a baseline 
+
+```{r}
+lm3<-lm(phys_part~tenure+tenure_sup + lev2)
+summary(lm3)
+```
+
+Unfortunately, this did not help and the title still is not significant in this model.
+
+
+```{r include=FALSE}
+HR_att<-read.csv("OCB_att.csv",header=TRUE)
+#Let's get the sex of our respondents into its own vector: 
+sex<-HR_att$Sex
+age<-HR_att$Age
+#Dependent variables
+Emotional_part<-HR_att$Emot_Part
+Intent_to_leave<-HR_att$Intent_toLeave
+Personal_conflicts<-HR_att$Personal_conflicts
+#Predictors
+#Challenge stressors:
+Work_Quant<-HR_att$Work_quant #Work quantity 
+Work_Resp<-HR_att$Work_Resp #Work responsibility 
+Work_Diff<-HR_att$Work_Diff #work difficulty 
+Work_Speed<-HR_att$Work_Speed # Work speed #Hindrance stressors: 
+Work_Demands<-HR_att$Work_Demands
+Admin_problems<-HR_att$Admin_problems
+Personal_conflicts<-HR_att$Personal_conflicts
+Org_Relations<-HR_att$Org_Relations
+Role_Conflict<-HR_att$Role_Conflict
+```
+
+# Assignment task 3
+
+*Try adding several other variables that could be theoretically appropriate. Can you find any that are significant in the model?*
+
+```{r}
+mod1<-lm(Emotional_part ~ Work_Resp + Work_Diff + Intent_to_leave
+         + Org_Relations + Work_Demands + Role_Conflict)
+summary(mod1)
+```
+
+
+```{r}
+mod2<-lm(Emotional_part ~ Work_Resp
+         + Org_Relations + Work_Demands + Role_Conflict)
+summary(mod2)
+```
+
+```{r}
+mod3<-lm(Emotional_part ~ Work_Resp
+         + Org_Relations + Work_Demands)
+summary(mod3)
+```
+
+
+```{r include=FALSE}
+FriendMat<-read.csv("Friendnet.csv",header=TRUE)
+ProfMat<-read.csv("Profnet.csv",header=TRUE)
+BossMat<-read.csv("BossNet.csv",header=TRUE)
+SupportMat<-read.csv("SupportNet.csv",header=TRUE)
+FriendMat<-as.matrix(FriendMat)
+ProfMat<-as.matrix(ProfMat)
+BossMat<-as.matrix(BossMat)
+SupportMat<-as.matrix(SupportMat)
+```
+
+```{r include=FALSE}
+Friend.any <- ifelse(FriendMat > 0, 1, 0)
+Boss.any <- ifelse(BossMat > 0, 1, 0)
+Prof.any <- ifelse(ProfMat > 0, 1, 0)
+Support.any <- ifelse(SupportMat > 0, 1, 0)
+```
+
+
+
+```{r include=FALSE}
+indegree_Friend <- degree(FriendGraph.any, mode='in')
+outdegree_Friend <- degree(FriendGraph.any, mode='out')
+total_degree_Friend <- degree(FriendGraph.any, mode='total')
+indegree_Support <- degree(SupportGraph.any, mode='in')
+outdegree_Support <- degree(SupportGraph.any, mode='out')
+total_degree_Support <- degree(SupportGraph.any, mode='total')
+indegree_Prof <- degree(ProfGraph.any, mode='in')
+outdegree_Prof <- degree(ProfGraph.any, mode='out')
+total_degree_Prof <- degree(ProfGraph.any, mode='total')
+
+
+#Betweenness and eigenvector: professional network?
+betweenness_Prof <- betweenness(ProfGraph.any)
+Prof_Evcent <- evcent(ProfGraph.any)
+Prof_eigen <- Prof_Evcent$vector
+```
+
+# Assignment task 4
+
+*Pass on other attributes to the graph. Select at least three and load them onto vertices.*
+
+
