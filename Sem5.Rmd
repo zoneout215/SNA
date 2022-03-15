@@ -208,24 +208,32 @@ Role_Conflict<-HR_att$Role_Conflict
 
 *Try adding several other variables that could be theoretically appropriate. Can you find any that are significant in the model?*
 
+Theoretically, almost all of the variables can be appropriate for influencing emotional participation, so for the first model we'll try to add organization relationships, intention to leave the job, demanding at work and role conflicts
+
 ```{r}
 mod1<-lm(Emotional_part ~ Work_Resp + Work_Diff + Intent_to_leave
          + Org_Relations + Work_Demands + Role_Conflict)
 summary(mod1)
 ```
 
+This model is not so bad, it is significant and the R-squared = 0.51, which is quite high index for the model. And most of the predictors are significant, exept for intention to leave and work difficulty. So let's delete them from the model and try another time.
 
 ```{r}
-mod2<-lm(Emotional_part ~ Work_Resp
-         + Org_Relations + Work_Demands + Role_Conflict)
+mod2<-lm(Emotional_part ~ Work_Resp + Org_Relations + Work_Demands
+         + Role_Conflict)
 summary(mod2)
 ```
+
+This model is good to, R-squared is still high = 0.51, but now role conflicts turned out insignificant, maybe that is because they can be correlated with the work difference, anyway, we'll exclude it too.
+
 
 ```{r}
 mod3<-lm(Emotional_part ~ Work_Resp
          + Org_Relations + Work_Demands)
 summary(mod3)
 ```
+
+Finally, all of the predictors are significant, so we can say that this is our final model. Adjusted R-squared = 0.4958, which is a bit lower, but still good for the model. And the conclusions are that the amount responsibility and work demanding positively affect the emotional participation (when increasing by 1 point of predictor, it increases by 0.17337 and 0.37011 respectively), while organizational conflicts - negatively (when increasing by 1, emotional participation decreases by 0.27521)
 
 
 ```{r include=FALSE}
