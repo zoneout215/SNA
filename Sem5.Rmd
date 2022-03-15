@@ -187,6 +187,7 @@ HR_att<-read.csv("OCB_att.csv",header=TRUE)
 #Let's get the sex of our respondents into its own vector: 
 sex<-HR_att$Sex
 age<-HR_att$Age
+names<-ocb_att$Name
 #Dependent variables
 Emotional_part<-HR_att$Emot_Part
 Intent_to_leave<-HR_att$Intent_toLeave
@@ -278,4 +279,124 @@ Prof_eigen <- Prof_Evcent$vector
 
 *Pass on other attributes to the graph. Select at least three and load them onto vertices.*
 
+We chose to look at education, emotional participation and personal conflicts, and created vectors for them in the image and likeness of the gender_vector creation 
+
+
+```{r}
+gender_vector<-vector()
+for(i in 1:122){ # this is our set of all network nodes
+  for(j in 1:68){ # this is our set of attribute-containing nodes
+    # for each node in i, we run through all node in j
+    # and compare names
+    if(V(all_graph)$name[i]==names[j]){
+      #if we match, we add the attribute to a vector
+      gender_vector[i]<-sex[j]
+      # and exit the inner loop for the next i
+      break;}
+    # if not, we are assigning a missing value
+    # and keep going until we find a matching node
+    else{gender_vector[i]<-99}
+  }
+}
+# Let's look at the result:
+gender_vector
+
+edu_vector<-vector()
+for(i in 1:122){ # this is our set of all network nodes
+  for(j in 1:68){ # this is our set of attribute-containing nodes
+    # for each node in i, we run through all node in j
+    # and compare names
+    if(V(all_graph)$name[i]==names[j]){
+      #if we match, we add the attribute to a vector
+      edu_vector[i]<-ocb_att$Education[j]
+      # and exit the inner loop for the next i
+      break;}
+    # if not, we are assigning a missing value
+    # and keep going until we find a matching node
+    else{edu_vector[i]<-99}
+  }
+}
+edu_vector
+
+
+emotion_vector<-vector()
+for(i in 1:122){ # this is our set of all network nodes
+  for(j in 1:68){ # this is our set of attribute-containing nodes
+    # for each node in i, we run through all node in j
+    # and compare names
+    if(V(all_graph)$name[i]==names[j]){
+      #if we match, we add the attribute to a vector
+      emotion_vector[i]<-Emotional_part[j]
+      # and exit the inner loop for the next i
+      break;}
+    # if not, we are assigning a missing value
+    # and keep going until we find a matching node
+    else{emotion_vector[i]<-0}
+  }
+}
+emotion_vector
+
+person_conf_vector<-vector()
+for(i in 1:122){ # this is our set of all network nodes
+  for(j in 1:68){ # this is our set of attribute-containing nodes
+    # for each node in i, we run through all node in j
+    # and compare names
+    if(V(all_graph)$name[i]==names[j]){
+      #if we match, we add the attribute to a vector
+      person_conf_vector[i]<-HR_att$Personal_conflicts[j]
+      # and exit the inner loop for the next i
+      break;}
+    # if not, we are assigning a missing value
+    # and keep going until we find a matching node
+    else{person_conf_vector[i]<-0}
+  }
+}
+person_conf_vector
+```
+
+
+```{r}
+all_graph<-set_vertex_attr(all_graph, 'gender', value=c(gender_vector))
+colors<-ifelse(gender_vector==1,"palevioletred",
+               ifelse(gender_vector==0,"royalblue2","gray"))
+par(mar=c(0,0,1,0))
+plot(all_graph, vertex.size=6.5, vertex.color=colors,
+     edge.arrow.size=.2, edge.color="black",
+     vertex.label=NA, main="Meaningless Network of AllNet with gender")
+```
+
+First graph is for education. 
+
+```{r}
+all_graph<-set_vertex_attr(all_graph, 'edu', value=c(edu_vector))
+colors<-ifelse(edu_vector==2,"palevioletred",
+               ifelse(edu_vector==3,"royalblue2",
+                      ifelse(edu_vector==4,"yellow","gray")))
+par(mar=c(0,0,1,0))
+plot(all_graph, vertex.size=6.5, vertex.color=colors,
+     edge.arrow.size=.2, edge.color="black",
+     vertex.label=NA, main="Meaningless Network of AllNet with education")
+```
+
+Here we have highlighted the values of the emotion_vector, which are less than 4, in order to look at the location on the network of people who rate their emotional participation in the work from low to medium (7 is max)
+
+```{r}
+all_graph<-set_vertex_attr(all_graph, 'emotion', value=c(emotion_vector))
+colors<-ifelse(emotion_vector < 4,"palevioletred", "gray")
+par(mar=c(0,0,1,0))
+plot(all_graph, vertex.size=6.5, vertex.color=colors,
+     edge.arrow.size=.2, edge.color="black",
+     vertex.label=NA, main="Meaningless Network of AllNet with emotional participation")
+```
+
+Here we have highlighted the values of the person_conf_vector, which are grater than 3, in order to look at the location on the network of people who more often conflicts at work
+
+```{r}
+all_graph<-set_vertex_attr(all_graph, 'conflict', value=c(person_conf_vector))
+colors<-ifelse(person_conf_vector > 3,"palevioletred", "gray")
+par(mar=c(0,0,1,0))
+plot(all_graph, vertex.size=6.5, vertex.color=colors,
+     edge.arrow.size=.2, edge.color="black",
+     vertex.label=NA, main="Meaningless Network of AllNet with emotional participation")
+```
 
