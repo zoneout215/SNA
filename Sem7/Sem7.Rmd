@@ -1,0 +1,90 @@
+---
+title: "Seminar 7"
+author: "\\newline Zhdankina Margarita, Kolesnikova Victoria, Romanov Sergey"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+suppressPackageStartupMessages(library(coda))
+suppressPackageStartupMessages(library(RColorBrewer))
+suppressPackageStartupMessages(library(sna))
+suppressPackageStartupMessages(library(knitr))
+suppressPackageStartupMessages(library(igraph))
+```
+
+
+```{r eval=FALSE, include=FALSE}
+SWFile <- "/SouthernWomen/SouthernWomen.tsv"
+```
+
+```{r eval=FALSE, include=FALSE}
+SWFilePath <- paste(wd, SWFile, sep = "")
+```
+
+```{r eval=FALSE, include=FALSE}
+SWrawdata<-read.table(SWFilePath, sep = "\t", header = TRUE, row.names = 1)
+SWrawdata
+```
+# Assignment task 1
+
+In your Seminar 7 folder, there is another file with data, HiTech. Create the code that will do the following:
+
+- Create a directory that will consist of a working directory name and the HiTech folder name, so that it opens the HiTech folder.
+
+- Create file paths to separate data files "GivesAdviceTo," "IsFriendOf," "ReportsTo," and "HiTechAtt.""
+
+```{r}
+wd<-getwd()
+```
+
+
+```{r}
+HTFile1 <- "/HiTech/HiTech - GivesAdviceTo.tsv"
+HTFilePath1 <- paste(wd, HTFile1, sep = "")
+GivesAdviceTo<-read.table(HTFilePath1, sep = "\t", header = TRUE, row.names = 1)
+head(GivesAdviceTo)
+
+HTFile2 <- "/HiTech/HiTech - IsFriendOf.tsv"
+HTFilePath2 <- paste(wd, HTFile2, sep = "")
+IsFriendOf<-read.table(HTFilePath2, sep = "\t", header = TRUE, row.names = 1)
+head(IsFriendOf)
+
+HTFile3 <- "/HiTech/HiTech - ReportsTo.tsv"
+HTFilePath3 <- paste(wd, HTFile3, sep = "")
+ReportsTo<-read.table(HTFilePath3, sep = "\t", header = TRUE, row.names = 1)
+head(ReportsTo)
+
+HTFile4 <- "/HiTech/HiTech - HiTechAtt.tsv"
+HTFilePath4 <- paste(wd, HTFile4, sep = "")
+HiTechAtt<-read.table(HTFilePath4, sep = "\t", header = TRUE, row.names = 1)
+head(HiTechAtt)
+```
+
+# Assignment task 2
+
+Using the plotting function in igraph, improve my graph for the SouthernWomen data by changing at least three characteristics of the graph.
+
+# Assignment task 3
+
+Display the contents of the Women.only and Events.only matrices we created above.
+
+- Explain what data in these matrices mean.
+
+- What are the benefits and problems with separating incidence matrices and creating adjacency matrices out of them?
+
+# Assignment task 4
+
+For the network SouthernWomen, please calculate the following network characteristics and briefly explain what they mean:
+
+- Indegree, outdegree, total degree;
+
+- Centrality: degree, betweenness, closeness, eigenvector, page rank; correlations between these measures. 
+
+- Transitivity.
