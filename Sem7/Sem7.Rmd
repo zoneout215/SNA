@@ -88,3 +88,39 @@ For the network SouthernWomen, please calculate the following network characteri
 - Centrality: degree, betweenness, closeness, eigenvector, page rank; correlations between these measures. 
 
 - Transitivity.
+
+
+```{r}
+degree <- data.frame(row.names = V(SWnet.sep$proj1)$name,
+                    T_degree = degree(SWnet.sep$proj1, mode ="total"),
+                    O_degree = degree(SWnet.sep$proj1, mode= "out"), 
+                    I_degree = degree(SWnet.sep$proj1, mode= "in"))
+                         
+                         
+kable(degree, row.names=T, label="Degrees")                         
+```
+As our network is made undirected all types of degree are equal to each other. Theresa is has the biggest degree centralites. 
+
+```{r}
+centralities <- data.frame(row.names = V(SWnet.sep$proj1)$name,
+                         degree = degree(SWnet.sep$proj1),
+                         betweenness = betweenness(SWnet.sep$proj1),
+                         closeness =  closeness(SWnet.sep$proj1),
+                         eigenvector = evcent(SWnet.sep$proj1)$vector,
+                         page_rank = page_rank(SWnet.sep$proj1)$vector)
+                         
+                         
+kable(centralities, row.names=T, label="Southern Women Centrality")                         
+```
+While Olivia and Flora are the highest in betweenness and closeness centralities, Therersa is leading in eigen and page rank figures.With regard to the least numbers, the belong to the same nodes but vise versa: Theresa is smallest in  betweenness and closeness, and Olivia and Flora are in eigen and page rank.
+
+```{r}
+cor(centralities)                       
+```
+Because degree, page_rank and eigen vector are computed without pathways they negatively correlate with betweenness and
+closeness centrality. 
+
+```{r}
+transitivity(SWnet.sep$proj1)
+```
+As we can see, Southern Women Network is almost fully transitive. 
