@@ -79,6 +79,22 @@ Display the contents of the Women.only and Events.only matrices we created above
 
 - What are the benefits and problems with separating incidence matrices and creating adjacency matrices out of them?
 
+The matrix with the data about women (Women.only) represents the information about the possibility that women were at the same parties. We can say that this matrix reflects the fact of co-presence at the events. The women can be perceived as nodes in the future network, and the events - as ties.
+
+The matrix with the data about events (Events.only) contains information about the relationship of events to each other. It turns out that for this matrix, the ties will be the women who attended the events, and the events themselves are the nodes of the future network, based on this matrix.
+
+
+Benefits of adjacency matrices:
+By separating the matrices, we can take a closer look at the various indicators, in this case, the connection between the participants of events and the events themselves. For example, with the separation of matrices, both the connection between people and between events becomes more evident, as they are observed separately from each other.
+
+Problems of adjacency matrices:
+By separating information about people and events, it becomes difficult to tell exactly how and where event participants are likely to meet. Thus, it is possible to know that some people are connected (or that they were ontook part in the same events), but information about which events brought them together is missed. In the same way, information is lost for events. You can trace that they are somehow connected, but which people unite particular events by their presence at them remains questionable.
+
+
+
+
+
+
 # Assignment task 4
 
 For the network SouthernWomen, please calculate the following network characteristics and briefly explain what they mean:
