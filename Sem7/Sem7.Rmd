@@ -333,7 +333,7 @@ exploratoryformal<-blockmodel(snasymmformal, formalclust, k=6,
                               diag=FALSE)
 ```
 
-```{r include=FALSE}
+```{r}
 #Plot the two blockmodels one after another for comparison:
 par(mar=c(0,0,2,0))
 plot.blockmodel(aprioriformal)
@@ -343,7 +343,7 @@ plot.blockmodel(exploratoryformal)
 heatmap(exploratoryformal[[4]], main ='Exploratory Blockmodel')
 ```
 
-```{r include=FALSE}
+```{r}
 plot(exploratoryformal, main = 'Apriori Block Model', coord=mycoord,
      vertex.cex =3, edge.col='azure4', vertex.col=cols,
      vertex.border='azure4', label=seq(1:20), label.pos=5,
@@ -583,15 +583,9 @@ m182_task <- delete.edges(m182_full, E(m182_full)[E(m182_full)$task_tie==0])
 
 *Why do we remove the zero edges from networks? We haven’t done it previously, why are we doing it now?*
 
-```{r}
-class(m182_full_data_frame)
-class(m182_full_data_frame)
-```
 
 Because previously we have not used nets to create edge attributes, and zero edges might provoke distortion in attribute figures, as missing values might do with classical data.
  
-This is if we want to use the edge value
-
 ```{r include=FALSE}
 task_adjacency<-get.adjacency(m182_task, attr='task_tie') # This is if we only want the tie (so it's 0 or 1) 
 binary_task_adjacency<-get.adjacency(m182_task)
@@ -721,10 +715,15 @@ plot.blockmodel(social_valued_blockmodel)
 plot.blockmodel(social_binary_blockmodel)
 
 plot.blockmodel(exploratoryadjacency)
+Answer: From those graphs we can observe that the task relation is barely related with the social relation. 
+For example, the node number 16 is ill connected in social net, but helped almost every one, 
+which could be seen from the task net. 
+What is more, the most successful social nodes — 1 and 10 – have not a lot of ties in social net. We have could claimed the 
+opposite relationship, if not the group of 2, 8, and 13, which are connected in both nets. 
 ```
 
-*- We have learned several ways to blockmodel. Which method do you find the most intuitively appealing? Why?*
-
+*- We have learned several ways to blockmodel. 
+Which method do you find the most intuitively appealing? Why?*
 CONCOR method was new and interesting, but it is failing our console, so we prefer good old cluster analysis, as we have known it before and it was easy to apply
 
 *- What did you learn from blockmodels about your data that you could not generate from previously learned techniques?* 
