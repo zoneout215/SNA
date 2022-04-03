@@ -15,6 +15,9 @@ library('wordcloud')
 library('wordcloud2')
 library('RColorBrewer')
 library('radarchart')
+library('stopwords') 
+library('dplyr')
+library('tibble')
 
 # ---- Databases ----
 
@@ -27,7 +30,7 @@ afinn <- read_csv("Afinn.csv",
 bing <- read_csv("Bing.csv",
                  col_types = cols(word = col_character(), sentiment = col_character()))
 nrc <- read_csv("NRC.csv",
-                col_types = cols(word = col_character(), sentiment = col_character()))
+                col_types = cols(word = col_character(), sentiment = col_character()))Я
 
 # ---- Most frequent words ----
 
@@ -39,7 +42,13 @@ covid_fake_new <- covid_fake %>%
   filter(word != "de",
          str_detect(word, "[a-z]"))
 
-covid_fake_new %>%
+stopword <- as_tibble(stopwords::stopwords("en")) 
+stopword <- rename(stopword, word=value)
+covid_fake_new_clean <- anti_join(covid_fake_new, stopword, by = 'word')
+newstopwords <- tibble(word = c('corona', 'virus', 'coronavirus', 'ncov', 'covid'))
+covid_fake_new_clean <- anti_join(covid_fake_new_clean, newstopwords, by = "word")
+
+covid_fake_new_clean %>%
   count(word, sort = TRUE) %>%
   mutate(word = fct_reorder(word, n)) %>%
   head(20) %>%
@@ -52,7 +61,7 @@ covid_fake_new %>%
   theme_classic()+
   theme(text = element_text(family = "Times", face = "bold", size = 14))
 
-covid_fake_filtered <- covid_fake_new %>%
+covid_fake_filtered <- covid_fake_new_clean %>%
   add_count(word) %>%
   filter(n >= 10)
 
@@ -65,6 +74,8 @@ top_word_covid_fake <- covid_fake_filtered %>%
   pairwise_cor(word, post_id, sort = TRUE) %>%
   head(100)
 
+
+
 covid_true_new <- covid_true %>%
   filter(!is.na(title)) %>%
   transmute(post_id = row_number(), title) %>%
@@ -73,7 +84,13 @@ covid_true_new <- covid_true %>%
   filter(word != "de",
          str_detect(word, "[a-z]"))
 
-covid_true_new %>%
+stopword <- as_tibble(stopwords::stopwords("en")) 
+stopword <- rename(stopword, word=value)
+covid_true_new_clean <- anti_join(covid_true_new, stopword, by = 'word')
+newstopwords <- tibble(word = c('corona', 'virus', 'coronavirus', 'ncov', 'covid'))
+covid_true_new_clean <- anti_join(covid_true_new_clean, newstopwords, by = "word")
+
+covid_true_new_clean %>%
   count(word, sort = TRUE) %>%
   mutate(word = fct_reorder(word, n)) %>%
   head(20) %>%
@@ -86,7 +103,7 @@ covid_true_new %>%
   theme_classic()+
   theme(text = element_text(family = "Times", face = "bold", size = 14))
 
-covid_true_filtered <- covid_true_new %>%
+covid_true_filtered <- covid_true_new_clean %>%
   add_count(word) %>%
   filter(n >= 10)
 
@@ -143,7 +160,7 @@ options(repr.plot.width=15, repr.plot.height=15)
 colsR_B<- brewer.pal(4,name = 'RdBu')
 display.brewer.pal(4,name = 'RdBu')
 
-covid_fake_new %>% 
+covid_fake_new_clean %>% 
   inner_join(bing, by="word") %>%
   count(word, sentiment, sort=T) %>% 
   acast(word ~ sentiment, value.var = "n", fill=0) %>% 
@@ -153,7 +170,7 @@ covid_fake_new %>%
 
 # ---- Sentimental analysis for reliable ----
 
-covid_true_new %>% 
+covid_true_new_clean %>% 
   inner_join(bing, by="word") %>%
   count(word, sentiment, sort=T) %>% 
   acast(word ~ sentiment, value.var = "n", fill=0) %>% 
@@ -163,8 +180,8 @@ covid_true_new %>%
 
 # ---- Radar Chart ----
 
-covid_true_new1<-covid_true_new
-covid_fake_new1<-covid_fake_new 
+covid_true_new1<-covid_true_new_clean
+covid_fake_new1<-covid_fake_new_clean
 
 FAKE <-c()
 for (i in 1:length(covid_fake_new1$post_id)){
@@ -219,8 +236,4 @@ library('network')
 library('sna')
 library('ergm')
 #library('igraph')
-
-
-
-
 
